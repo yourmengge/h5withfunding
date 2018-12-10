@@ -1,0 +1,99 @@
+.swiper-container {
+  width: 100vw;
+}
+
+.swiper-container img {
+  width: 100%;
+}
+
+.index {
+  height: calc(100vh - 100px);
+  overflow-y: auto;
+}
+
+.tabs {
+  display: flex;
+  height: 90px;
+  background: #fff;
+  margin-bottom: 10px;
+}
+
+.tabs .tabs-div {
+  flex: 1;
+  text-align: center;
+  padding-top: 10px;
+}
+
+.tabs .tabs-div2 {
+  flex: 1;
+  text-align: center;
+  padding-top: 10px;
+  font-size: .8rem;
+}
+
+.tabs .tabs-div2 p {
+  margin: 6px 0;
+}
+
+.tabs .tabs-div2 p:last-child {
+  font-size: 0.9rem;
+}
+
+.tabs .tabs-div .tab-icon {
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  background: url(../../assets/images/tab-icon.png) no-repeat;
+  background-size: 100% 400%;
+}
+
+.jiaoyi {
+  background-position-y: -50px !important;
+}
+
+.zichan {
+  background-position-y: -100px !important;
+}
+
+.geren {
+  background-position-y: -150px !important;
+}
+
+.tabs .tabs-div p {
+  margin: 4px 0;
+  color: #3c3c3c;
+}
+
+.zixun {
+  background: #fff;
+}
+
+.zixun-title {
+  border-bottom: solid 1px #e4e4e4;
+  height: 40px;
+}
+
+.zixun-title img {
+  width: 40px;
+  height: 40px;
+  vertical-align: middle;
+  margin-left: 5px;
+}
+
+.zixun-title span {
+  line-height: 40px;
+}
+
+.zixun-content {
+  padding: 5px 15px;
+  border-bottom: solid 1px #e4e4e4;
+}
+
+.content-title {
+  font-size: .9rem;
+}
+
+.content-info {
+  font-size: .8rem;
+  color: #868686;
+}

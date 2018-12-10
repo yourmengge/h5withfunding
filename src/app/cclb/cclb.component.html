@@ -1,0 +1,43 @@
+<div class="cclb">
+  <table cellspacing="0">
+    <tr>
+      <td>
+        名称
+      </td>
+      <td>
+        参考盈亏
+      </td>
+      <td>
+        持仓/可用
+      </td>
+      <td>
+        参考成本/现价
+      </td>
+    </tr>
+    <tr *ngFor='let a of list' (click)='select(a)'>
+      <td>
+        <p>{{a.stockCode}}</p>
+        <p>{{a.stockName}}</p>
+      </td>
+      <td class="{{a.profit < 0?'green':'red'}}">
+        {{a.profit}}
+      </td>
+      <td>
+        <p>
+          {{a.stockCnt}}
+        </p>
+        <p>
+          {{a.stockCntAble}}
+        </p>
+      </td>
+      <td>
+        <p>
+          {{a.costPrice | round4}}
+        </p>
+        <p>
+          {{a.lastPrice | round4}}
+        </p>
+      </td>
+    </tr>
+  </table>
+</div>

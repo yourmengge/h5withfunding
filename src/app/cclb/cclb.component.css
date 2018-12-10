@@ -1,0 +1,29 @@
+.cclb {
+    background: #fff;
+}
+
+.cclb table {
+    width: 100%;
+    text-align: center;
+    /* border-top: solid 1px #ccc; */
+    font-size: .9rem;
+}
+
+.cclb table tr, .cclb table tr td {
+    height: 40px;
+    border-bottom: solid 1px rgb(238, 238, 238);
+}
+
+.cclb table tr:first-child {
+    background: #ececec !important;
+}
+
+
+
+.green {
+    color: green;
+}
+
+.red {
+    color: #b00e23;
+}

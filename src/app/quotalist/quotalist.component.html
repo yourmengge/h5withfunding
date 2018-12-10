@@ -1,0 +1,110 @@
+<div class="navigation">
+  <div class="back" (click)='back()'></div>
+  <p class="navigation-title">{{date}}{{type == "BUY"?"认购":"认沽"}}</p>
+</div>
+<div class="zixuancontent">
+  <div class="optionTitle">
+    <span>
+      50ETF
+    </span>
+    <span [class]="color(q50eft.upRatio)">
+      {{q50eft.lastPrice}}
+    </span>
+    <span [class]="color(q50eft.upRatio)">
+      {{q50eft.upDiff}}
+    </span>
+    <span [class]="color(q50eft.upRatio)">
+      {{q50eft.upRatio}}
+    </span>
+  </div>
+  <div class="btn-list">
+    <button [class]='type=="BUY"?"btn-active":""' (click)='quato("BUY")'>认购</button>
+    <button [class]='type=="SELL"?"btn-active":""' (click)='quato("SELL")'>认沽</button>
+  </div>
+  <div class="notempty cclb">
+    <div style="background: #efefef">
+      <div class="table-flex">
+        <div>
+          <p>
+            行权价
+          </p>
+          <p>
+            代码
+          </p>
+        </div>
+        <div class='single-line'>
+          现价
+        </div>
+        <div class='single-line'>
+          涨跌幅
+        </div>
+        <div>
+          <p>
+            买价
+          </p>
+          <p>
+            买量
+          </p>
+        </div>
+        <div>
+          <p>
+            卖价
+          </p>
+          <p>
+            卖量
+          </p>
+        </div>
+        <div>
+          <p>
+            持仓量
+          </p>
+          <p>
+            成交量
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="zixuan-list">
+      <div class="table-flex2 {{a.upRatio.indexOf('-') >= 0?'green':'red'}}" *ngFor='let a of quoteDetail' (click)='goto(a.stockCode)'>
+        <div style="color:#333">
+          <p>
+            {{a.exercisePrice | round4}}
+          </p>
+          <p>
+            {{a.stockCode}}
+          </p>
+        </div>
+        <div class='single-line'>
+          {{a.lastPrice | round4}}
+        </div>
+        <div class='single-line'>
+          {{a.upRatio}}
+        </div>
+        <div>
+          <p>
+            {{a.buyPrice01 | round4}}
+          </p>
+          <p>
+            {{a.buyVolume01}}
+          </p>
+        </div>
+        <div>
+          <p>
+            {{a.sellPrice01 | round4}}
+          </p>
+          <p>
+            {{a.sellVolume01}}
+          </p>
+        </div>
+        <div>
+          <p>
+            {{a.totalPosition}}
+          </p>
+          <p>
+            {{a.totalVolume}}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

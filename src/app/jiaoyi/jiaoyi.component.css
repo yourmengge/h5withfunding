@@ -1,0 +1,27 @@
+.menuList {
+    display: flex;
+    text-align: center;
+    background: #fff;
+    position: relative;
+    width: 100vw;
+    box-shadow: 0px 5px 8px 1px rgba(217, 217, 217, 0.27);
+}
+
+.footer-div {
+    flex: 1;
+}
+
+.footer-div-active{
+    color: #b00e23;
+    border-bottom: solid 1px;
+}
+
+.footer-div p{
+    margin: 10px 0;
+}
+
+.content{
+    margin-bottom: 50px;
+    height: calc(100vh - 140px);
+    overflow-y: auto;
+}

@@ -1,0 +1,163 @@
+.content {
+    display: flex;
+    width: 100vw;
+    background: #fff;
+    text-align: center;
+    border-top: solid 1px #eaeaea;
+    border-bottom: solid 1px #eaeaea;
+    margin-bottom: 5px;
+}
+
+.left-div {
+    padding: 5px 2%;
+}
+
+.left-line {
+    height: 40px;
+    line-height: 40px;
+}
+
+.left-content {
+    float: right;
+}
+
+.content .left-div div {
+    margin: 11px 0;
+}
+
+.input {
+    border: solid 1px #b00e23;
+    font-size: 1.1rem;
+    padding: 0 4px;
+    width: 94%;
+    height: 32px;
+    line-height: 32px;
+    border-radius: none;
+}
+
+.add-down {
+    display: flex;
+}
+
+.add-down div {
+    border: none;
+    color: #fff;
+    background: #b00e23;
+    width: 34px;
+    outline: none;
+    font-size: 2rem;
+    height: 34px;
+    line-height: 29px;
+    margin: 0 !important;
+    text-align: center;
+}
+
+.add-down input {
+    width: 100px;
+}
+
+.green {
+    float: left;
+    color: green;
+}
+
+.red {
+    float: right;
+    color: red;
+}
+
+.four-btn {
+    float: right;
+}
+
+.four-btn div {
+    float: left;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 0.8rem;
+    margin: 5px !important;
+    border-radius: 0;
+    border: solid 1px #eaeaea;
+}
+
+.right-div {
+    display: flex;
+    border-top: solid 1px #eaeaea;
+    border-bottom: solid 1px #eaeaea;
+    padding: 0 2%;
+    width: calc(100vw - 4%);
+}
+
+.right-div div {
+    flex: 1;
+    padding: 5px;
+}
+
+.right-div div:first-child {
+    border-right: solid 1px #eaeaea;
+}
+
+.right-div p {
+    margin: 2px;
+    font-size: .9rem;
+    display: flex;
+    height: 24px;
+    line-height: 24px;
+}
+
+.right-div p span {
+    flex: 1;
+    text-align: center;
+}
+.right-div p span:first-child{
+    text-align: left;
+}
+.right-div p span:last-child{
+    text-align: right;
+}
+
+.line {
+    border-bottom: dashed 1px #eaeaea;
+    height: 1px !important;
+}
+
+.gpmc {
+    float: right;
+    position: relative;
+    margin-top: -25px;
+    font-size: .9rem;
+    margin-right: 20px;
+}
+
+.gpmc span{
+    margin-left: 10px;
+}
+
+.green-red {
+    margin-top: -10px !important;
+    margin-bottom: 5px;
+    height: 17px;
+}
+
+.four-btn-active {
+    background: #d4d4d4
+}
+
+.SELL .input {
+    border: solid 1px #145c90;
+}
+
+.SELL .buy div {
+    background: #145c90;
+    border: solid 1px #145c90;
+}
+
+.SELL .add-down div {
+    background: #145c90;
+}
+
+.search-input{
+    margin: 10px 0;
+}

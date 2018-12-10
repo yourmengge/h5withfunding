@@ -1,0 +1,136 @@
+.head {
+    width: 65px;
+    border-radius: 90px;
+}
+
+.header {
+    text-align: center;
+    background: #b00e23;
+    color: #fff;
+    padding: 15px;
+    height: 150px;
+}
+
+.name {
+    font-size: 1rem;
+}
+
+.menuList {
+    display: flex;
+    text-align: center;
+    background: #fff;
+    width: 100vw;
+    box-shadow: 0px 5px 8px 1px rgba(217, 217, 217, 0.27);
+}
+
+.footer-div {
+    flex: 1;
+    padding-top: 13px;
+}
+
+.footer-div p {
+    font-size: .9rem;
+    margin-top: 4px;
+    color: #898989;
+}
+
+.icon {
+    width: 26px;
+    height: 26px;
+    margin: auto;
+    background: url(../../assets/images/menulist.png) no-repeat;
+    background-size: 873%;
+    background-position: -11px -10px;
+    margin-bottom: 4px;
+}
+
+.sell {
+    background-position: -55px -10px;
+}
+
+.chedan {
+    background-position: -99px -10px;
+}
+
+.chicang {
+    background-position: -146px -10px;
+}
+
+.search {
+    background-position: -192px -10px;
+}
+
+.cszj {
+    width: 94%;
+    border-radius: 5px;
+    margin: 10px 3%;
+    background: #fff;
+    font-size: 1rem;
+    padding: 5px 0;
+}
+
+.cszj p {
+    margin-left: 30px;
+}
+
+.cszj img {
+    float: right;
+    width: 51px;
+    position: relative;
+    margin-top: -62px;
+    margin-right: 30px;
+}
+
+.kyzj {
+    display: flex;
+    width: 94%;
+    border-radius: 5px;
+    margin: 10px 3%;
+    background: #fff;
+    font-size: 1rem;
+    padding: 5px 0;
+    margin-bottom: 20px;
+}
+
+.kyzj div {
+    flex: 1;
+}
+
+.kyzj div p{
+    margin-left: 30px;
+}
+
+.kyzj div:last-child{
+    border-left: solid 1px #e0e0e0;
+}
+
+.logout{
+    font-size: 1rem;
+    margin-right: 20px;
+    position: relative;
+    float: right;
+}
+
+.recharge{
+    background: #fff;
+    color: #b00e23;
+    border: solid 1px #b00e23;
+    padding: 5px 20px;
+    border-radius: 5px;
+    text-align: center;
+    width: 95px;
+    font-size: 0.8rem;
+    margin: 0 5px;
+}
+
+.recharge:active{
+    background: #ddd7d7;
+}
+
+@media screen and (max-width: 320px) {
+
+    .recharge {
+      padding: 5px 10px;
+      width: 70px;
+    }
+  }

@@ -1,0 +1,46 @@
+<div class="navigation">
+  <div class="back" (click)='back()'></div>
+  <p class="navigation-title">充值</p>
+</div>
+<div class="rechange">
+  <p style="margin-left: 10px;">
+    请选择充值金额
+  </p>
+  <div class="money-div">
+    <div [class]="money == item?'active':''" *ngFor="let item of list" (click)='select(item)'>
+      {{item}}元
+    </div>
+    <div>
+      <input class="recharge-input" type="number" style="font-size:14px;" placeholder="输入充值金额" (keyup)='input()'
+        [(ngModel)]="inputMoney">
+    </div>
+  </div>
+  <div class="pay-way" (click)='selectPayType(1)' *ngIf="showAliPay">
+    <img src="./assets/images/ali.png" alt="">
+    <span>支付宝支付</span>
+    <div class="radio {{payType == 1?'':'radio-none'}}"></div>
+  </div>
+  <div class="pay-way" (click)='selectPayType(2)'>
+    <img src="./assets/images/bank.png" alt="">
+    <span>银行卡转账(线下)</span>
+    <div class="radio {{payType == 2?'':'radio-none'}}"></div>
+  </div>
+  <div class="pay-way" (click)='selectPayType(3)'>
+    <img src="./assets/images/ali.png" alt="">
+    <span>支付宝支付(线下)</span>
+    <div class="radio {{payType == 3?'':'radio-none'}}"></div>
+  </div>
+  <div class="pay-way" (click)='selectPayType(4)' *ngIf="showWechatPay">
+    <img src="./assets/images/wechat.png" alt="">
+    <span>华阳信通支付(微信)</span>
+    <div class="radio {{payType == 4?'':'radio-none'}}"></div>
+  </div>
+  <div class="pay-way" (click)='selectPayType(5)' *ngIf="showWechatPay">
+    <img src="./assets/images/yinlian.png" alt="">
+    <span>银联</span>
+    <div class="radio {{payType == 5?'':'radio-none'}}"></div>
+  </div>
+  <div class="bottom-btn" style="margin-top:20px;">
+    <div class="main" (click)='pay()'>下一步</div>
+  </div>
+</div>

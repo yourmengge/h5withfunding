@@ -1,0 +1,67 @@
+<div class="navigation">
+  <p class="navigation-title">个人中心</p>
+  <span class="logout" (click)='logout()'>注销</span>
+</div>
+<div class="main-content">
+  <div class="header">
+    <img src="./assets/images/{{logo}}.png" alt="" class="head">
+    <p class="name">{{userInfo.accountName}}</p>
+    <div>
+      <button (click)='goto2("withdraw")' class="recharge">提现</button>
+      <button (click)='goto2("recharge")' class="recharge">充值</button>
+      <button (click)='goto2("capitalflow")' class="recharge">资金流水</button>
+    </div>
+  </div>
+  <div class="menuList">
+    <div *ngFor='let a of menuList' class="footer-div {{url === a.id?'icon-active':''}}" (click)='goto(a.id)'>
+      <div class="icon {{a.class}}"></div>
+      <p>
+        {{a.name}}
+      </p>
+    </div>
+  </div>
+  <div class="cszj">
+    <p>
+      期初规模
+    </p>
+    <p class="red">
+      {{userInfo.allottedScale}}
+    </p>
+    <img src="./assets/images/zc1.png" alt="">
+  </div>
+  <div class="cszj">
+    <p>
+      总资产
+    </p>
+    <p class="red">
+      {{userInfo.totalScale}}
+    </p>
+    <img src="./assets/images/zc2.png" alt="">
+  </div>
+  <div class="cszj">
+    <p>
+      持仓权益
+    </p>
+    <p class="red">
+      {{userInfo.stockScale}}
+    </p>
+    <img src="./assets/images/zc3.png" alt="">
+  </div>
+  <div class="kyzj">
+    <div>
+      <p> 可用资金 </p>
+      <p class="red"> {{userInfo.ableScale}}</p>
+    </div>
+    <div>
+      <p>
+        冻结资金
+      </p>
+      <p class="red">
+        {{userInfo.lockScale}}
+      </p>
+    </div>
+  </div>
+</div>
+<div style="height:50px;">
+  
+</div>

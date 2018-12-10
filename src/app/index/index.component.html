@@ -1,0 +1,74 @@
+<div class="navigation">
+  <p class="navigation-title">首页</p>
+</div>
+<div class="index">
+  <div class="swiper-container">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide"><img src="./assets/images/banner.jpg" alt=""></div>
+      <div class="swiper-slide"><img src="./assets/images/banner2.jpg" alt=""></div>
+      <div class="swiper-slide"><img src="./assets/images/banner3.jpg" alt=""></div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+  <div class="tabs">
+    <div class="tabs-div " (click)='goto2("zixuan")'>
+      <div class=" tab-icon" alt=""></div>
+      <p>
+        行情
+      </p>
+    </div>
+    <div class="tabs-div " (click)='goto2("jiaoyi")'>
+      <div class=" tab-icon jiaoyi" alt=""></div>
+      <p>
+        交易
+      </p>
+    </div>
+    <div class="tabs-div " (click)='goto2("chicang")'>
+      <div class=" tab-icon zichan" alt=""></div>
+      <p>
+        资产
+      </p>
+    </div>
+    <div class="tabs-div " (click)='goto2("usercenter")'>
+      <div class=" tab-icon geren" alt=""></div>
+      <p>
+        个人
+      </p>
+    </div>
+  </div>
+  <div class="tabs">
+    <div class="tabs-div2 " *ngFor="let item of list">
+      <p [class]="color(item.upRatio)">{{item.lastPrice}}</p>
+      <p [class]="color(item.upRatio)">
+        <span>
+          {{item.preClosePrice}}
+        </span>
+        <span style="margin-left:5px;">
+          {{item.upRatio}}
+        </span>
+      </p>
+      <p>
+        {{item.stockName}}
+      </p>
+    </div>
+  </div>
+  <div class="zixun">
+    <div class="zixun-title">
+      <img src="./assets/images/zixun.png" alt="">
+      <span>资讯</span>
+    </div>
+    <div class="zixun-content" *ngFor="let item of newslist" (click)='goto(item.id)'>
+      <p class="content-title">
+        {{item.title}}
+      </p>
+      <p class="content-info">
+        <span>
+          {{item.createTime}}
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+<div style="height:50px;">
+  
+</div>

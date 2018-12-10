@@ -1,0 +1,179 @@
+<div class="search-input">
+  <input class="input" (keyup)='getQuotation()' maxlength="8" type="number" placeholder="合约代码" [(ngModel)]='stockCode'
+    style="margin-left:5px;width: calc(100% - 20px)">
+  <p class="gpmc">
+    <span>{{stockName}}</span>
+    <span>{{stockHQ.lastPrice | round4}}</span>
+    <span>{{stockHQ.upRatio}}</span>
+  </p>
+</div>
+<div class="search-div" [@showDelete]="show">
+  <div (click)='selectGP(a)' *ngFor='let a of list'>
+    <div>
+      <span>{{a.stockCode}}</span>
+    </div>
+    <div>
+      <span>{{a.stockName}}</span>
+    </div>
+    <div>
+      <span>{{a.pinYin}}</span>
+    </div>
+  </div>
+</div>
+<div class="right-div">
+  <div>
+    <p (click)='selectPrice(stockHQ.sellLevel.sellPrice01)'>
+      <span>卖1</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice01)}}">{{stockHQ.sellLevel.sellPrice01 | round4}}</span>
+      <span>{{stockHQ.sellLevel.sellVolume01 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.sellLevel.sellPrice02)'>
+      <span>卖2</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice02)}}">{{stockHQ.sellLevel.sellPrice02 | round4}}</span>
+      <span>{{stockHQ.sellLevel.sellVolume02 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.sellLevel.sellPrice03)'>
+      <span>卖3</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice03)}}">{{stockHQ.sellLevel.sellPrice03 | round4}}</span>
+      <span>{{stockHQ.sellLevel.sellVolume03 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.sellLevel.sellPrice04)'>
+      <span>卖4</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice04)}}">{{stockHQ.sellLevel.sellPrice04 | round4}}</span>
+      <span>{{stockHQ.sellLevel.sellVolume04 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.sellLevel.sellPrice05)'>
+      <span>卖5</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice05)}}">{{stockHQ.sellLevel.sellPrice05 | round4}}</span>
+      <span>{{stockHQ.sellLevel.sellVolume05 | numInt }}</span>
+    </p>
+  </div>
+  <div>
+    <p (click)='selectPrice(stockHQ.buyLevel.buyPrice01)'>
+      <span>买1</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice01)}}">{{stockHQ.buyLevel.buyPrice01 | round4}}</span>
+      <span>{{stockHQ.buyLevel.buyVolume01 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.buyLevel.buyPrice02)'>
+      <span>买2</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice02)}}">{{stockHQ.buyLevel.buyPrice02 | round4}}</span>
+      <span>{{stockHQ.buyLevel.buyVolume02 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.buyLevel.buyPrice03)'>
+      <span>买3</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice03)}}">{{stockHQ.buyLevel.buyPrice03 | round4}}</span>
+      <span>{{stockHQ.buyLevel.buyVolume03 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.buyLevel.buyPrice04)'>
+      <span>买4</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice04)}}">{{stockHQ.buyLevel.buyPrice04 | round4}}</span>
+      <span>{{stockHQ.buyLevel.buyVolume04 | numInt }}</span>
+    </p>
+    <p (click)='selectPrice(stockHQ.buyLevel.buyPrice05)'>
+      <span>买5</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice05)}}">{{stockHQ.buyLevel.buyPrice05 | round4}}</span>
+      <span>{{stockHQ.buyLevel.buyVolume05 | numInt }}</span>
+    </p>
+  </div>
+</div>
+<div class="left-div {{classType}}">
+  <div class="left-line">
+    <span>
+      价格类型
+    </span>
+    <div class="left-content">
+      <input type="radio" name="price" (click)='selectType(1)' [checked]='priceType==1'>最新价
+      <input type="radio" name="price" (click)='selectType(2)' [checked]='priceType==2'>对手价
+      <input type="radio" name="price" (click)='selectType(3)' [checked]='priceType==3'>排队价
+    </div>
+  </div>
+  <div class="left-line">
+    <span>
+      委托价格
+    </span>
+    <div class="left-content add-down ">
+      <div class="down" (click)='count(-1)'>-</div>
+      <input class="input" type="number" placeholder="{{text}}价" [(ngModel)]='appointPrice' style="text-align: center">
+      <div class="add" (click)='count(1)'>+</div>
+    </div>
+  </div>
+  <!-- <div class="green-red">
+    <span class="green" (click)='selectPrice(stockHQ.lowPrice)'>跌停 {{stockHQ.lowPrice | toFixed}}</span>
+    <span class="red" (click)='selectPrice(stockHQ.highPrice)'>涨停 {{stockHQ.highPrice | toFixed}}</span>
+  </div> -->
+  <div class="left-line">
+    <span>
+      委托数量
+    </span>
+    <div class="left-content">
+      <div class="left-content add-down ">
+        <div class="down" (click)='count2(-1)'>-</div>
+        <input class="input" type="number" placeholder="{{text}}量" (keyup)='inputCnt()' [(ngModel)]='appointCnt' style="text-align: center">
+        <div class="add" (click)='count2(1)'>+</div>
+      </div>
+    </div>
+  </div>
+  <div class="four-btn">
+    <div class="{{ccount==5?'four-btn-active':''}}" (click)='selectCount(5)'>5</div>
+    <div class="{{ccount==10?'four-btn-active':''}}" (click)='selectCount(10)'>10</div>
+    <div class="{{ccount==20?'four-btn-active':''}}" (click)='selectCount(20)'>20</div>
+    <div class="{{ccount==29?'four-btn-active':''}}" (click)='selectCount(29)'>29</div>
+  </div>
+  <p style="margin-top: 50px;  text-align: right;">
+    订单金额：{{totalPrice(appointPrice,appointCnt)}}
+  </p>
+</div>
+
+<div class="bottom-btn">
+  <div class="main" (click)='buy()'>{{text}}</div>
+</div>
+<div class="bottom-btn">
+  <div class="clear" (click)='clear()'>清空</div>
+</div>
+
+
+<div style="margin-top:20px;">
+	<app-cclb></app-cclb>
+</div>
+<div class="submit-alert" *ngIf='submitAlert'>
+  <div class="alert-div">
+    <p>
+      {{text}}确认
+    </p>
+    <p>
+      <span>账户：</span>
+      <span>{{userName}}</span>
+    </p>
+    <p>
+      <span>名称：</span>
+      <span>{{stockName}}</span>
+    </p>
+    <p>
+      <span>代码：</span>
+      <span>{{stockCode}}</span>
+    </p>
+    <p>
+      <span>数量：</span>
+      <span>{{appointCnt}}</span>
+    </p>
+    <p>
+      <span>委托价：</span>
+      <span>{{appointPrice}}</span>
+    </p>
+    <p>
+      <span>订单金额：</span>
+      <span>{{totalPrice(appointPrice,appointCnt)}}</span>
+    </p>
+    <p>
+      <span>预估手续费：</span>
+      <span>{{ygsxf * appointCnt}}</span>
+    </p>
+    <button class="submit-btn" (click)='submintBuy()'>
+      确认
+    </button>
+    <br>
+    <button class="cancel-btn" (click)='closeAlert()'>
+      取消
+    </button>
+  </div>
+</div>

@@ -1,0 +1,73 @@
+.close{
+    font-size: 1rem;
+    right: 20px;
+    position: fixed;
+}
+
+.search-bar{
+    display: flex;
+    width: 100vw;
+    border-bottom: solid 1px #efefef;
+}
+
+.search-bar div{
+    width: calc(100% - 50px);
+    border: solid 1px #ccc;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.search-bar div img{
+    width: 23px;
+    padding: 5px;
+    float: left;
+}
+
+.search-bar div input{
+    height: 33px;
+    border: none;
+    padding: 0 10px;
+    font-size: 1rem;
+    line-height: 33px;
+    width: calc(100% - 62px);
+    outline: none;
+}
+
+.cancel{
+    font-size: 1.1rem;
+    line-height: 45px;
+    display: block;
+    width: 50px;
+    text-align: center;
+}
+
+.content-flex{
+    background: #fff;
+    display: flex;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    border-bottom: solid 1px #e1e4df;
+}
+
+.flex-1{
+    flex: 3;
+}
+
+.flex-2{
+    flex: 4;
+}
+
+.flex-3{
+    flex: 2;
+}
+
+.add-btn{
+    width: 50px;
+    height: 25px;
+    line-height: 25px;
+    border: solid 1px #ccc;
+    border-radius: 5px;
+    margin: auto;
+    margin-top: 7px;
+}

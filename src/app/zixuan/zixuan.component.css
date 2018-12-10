@@ -1,0 +1,133 @@
+.empty img {
+  padding: 40px;
+  border: dashed 1px #dfdfdf;
+  margin-top: 120px;
+  position: relative;
+  left: 50%;
+  margin-left: -73px;
+}
+
+.empty p {
+  text-align: center;
+}
+
+.search {
+  position: relative;
+  width: 25px;
+  margin: 12px;
+  float: right;
+}
+
+.cclb {
+  background: #fff;
+  overflow-x: hidden;
+  width: 100vw;
+}
+
+.cclb table {
+  width: 100%;
+  text-align: center;
+  font-size: .9rem;
+}
+
+.cclb table tr {
+  height: 36px;
+  border-bottom: solid 1px #ccc;
+}
+
+.cclb table tr:first-child {
+  background: #e3e6e6;
+}
+
+.cclb table tr td p {
+  margin: 5px;
+}
+
+.delete-btn {
+  margin-left: 30px;
+  margin-top: 10px;
+}
+
+.table-flex {
+  height: 40px;
+  line-height: 40px;
+  background: #efefef;
+  text-align: center;
+  border-bottom: solid 1px #e4e4e4;
+}
+
+.table-flex div,
+.table-flex2 div {
+  float: left;
+  width: 20%;
+}
+
+.table-flex div:nth-child(1),
+.table-flex2 div:nth-child(2) {
+  width: 40%;
+}
+
+.table-flex2 div:nth-child(1) {
+  height: 40px;
+  position: absolute;
+  margin-left: -75px;
+}
+
+.table-flex2 {
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  font-size: .9rem;
+  width: 100vw;
+  border-bottom: solid 1px #f5f5f5;
+}
+
+.edit {
+  float: left;
+  margin-left: 20px;
+  font-size: .9rem;
+  position: relative;
+  z-index: 10;
+}
+
+.show-delete {
+  animation: show 1000ms;
+  animation-fill-mode: forwards;
+}
+
+.tabs {
+  display: flex;
+  height: 90px;
+  background: #fff;
+}
+
+.tabs .tabs-div2 {
+  flex: 1;
+  text-align: center;
+  padding-top: 10px;
+  font-size: .8rem;
+}
+
+.tabs .tabs-div2 p {
+  margin: 6px 0;
+}
+
+.tabs .tabs-div2 p:last-child {
+  font-size: 0.9rem;
+}
+
+@keyframes show {
+  from {
+    margin-left: 0px;
+  }
+
+  to {
+    margin-left: 60px;
+  }
+}
+
+.zixuan-list {
+  height: calc(100vh - 146px);
+  overflow-y: auto;
+  overflow-x: hidden;
+}

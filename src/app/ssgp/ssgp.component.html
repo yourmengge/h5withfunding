@@ -1,0 +1,26 @@
+<!-- <div class="navigation">
+  搜索股票
+  <span (click)='close()' class="close">关闭</span>
+</div> -->
+<div class="search-bar">
+  <div>
+    <img src="./assets/images/search.png" alt="">
+    <input (keyup)='getQuotation()' type="text" placeholder="搜索股票代码/首字母" [(ngModel)]='stockCode' maxlength="6" autofocus>
+  </div>
+  <span class="cancel" (click)='close()'>取消</span>
+</div>
+<div class="main-content">
+  <div class="content-flex" *ngFor='let a of list'>
+    <div class="flex-1">
+      {{a.stockCode}}
+    </div>
+    <div class="flex-2">
+      {{a.stockName}}
+    </div>
+    <div class="flex-3">
+      <div class="add-btn" (click)='add(a.stockCode)'>
+        添加
+      </div>
+    </div>
+  </div>
+</div>
