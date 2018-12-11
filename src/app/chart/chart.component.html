@@ -24,34 +24,34 @@
       </div>
       <div class="head2">
         <p>
+          高
+        </p>
+        <p>
+          {{stockHQ.highPrice | round4}}
+        </p>
+        <p>
+          低
+        </p>
+        <p>
+          {{stockHQ.lowPrice | round4}}
+        </p>
+      </div>
+      <div class="head2">
+        <p>
           今开
         </p>
         <p>
           {{stockHQ.openPrice | round4}}
         </p>
         <p>
-          成交量
-        </p>
-        <p>
-          {{stockHQ.totalVolume}}
-        </p>
-      </div>
-      <div class="head2">
-        <p>
           昨收
         </p>
         <p>
           {{staticData.preClosePrice | round4}}
         </p>
-        <p>
-          持仓量
-        </p>
-        <p>
-          {{stockHQ.totalPosition}}
-        </p>
       </div>
     </div>
-    <div class="chart-head2">
+    <!-- <div class="chart-head2">
       <div>
         <span>最高</span>
         <span>{{stockHQ.highPrice | round4}}</span>
@@ -68,7 +68,7 @@
         <span>合约单位</span>
         <span>10000</span>
       </div>
-    </div>
+    </div> -->
   </div>
   <div class="fenshi-div">
     <p class="shifen">分时</p>
