@@ -18,7 +18,7 @@ export class WithdrawComponent implements OnInit {
   }
 
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   goto(url) {

@@ -24,9 +24,9 @@
         委托/成交量
       </td>
     </tr>
-    <tr *ngFor='let a of list'>
+    <tr *ngFor='let a of list' (click)='goto(a)'>
       <td>
-        <span class="span {{a.appointTypeDesc === '卖'?'blue':''}}">{{a.appointType === 1?'买':'卖'}}</span>
+        <span class="span {{a.appointType == '2'?'blue':''}}">{{a.appointType === 1?'买':'卖'}}</span>
         <p>
           {{a.stockName}}
         </p>

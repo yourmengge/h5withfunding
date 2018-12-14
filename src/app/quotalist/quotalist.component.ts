@@ -18,7 +18,7 @@ export class QuotalistComponent extends ZixuanComponent {
     this.type = this.activeRoute.snapshot.params['id'].split('_')[1];
   }
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   quato(type) {

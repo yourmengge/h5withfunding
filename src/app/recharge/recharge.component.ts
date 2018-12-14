@@ -40,7 +40,7 @@ export class RechargeComponent implements OnInit {
   }
 
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   input() {

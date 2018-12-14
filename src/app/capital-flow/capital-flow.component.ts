@@ -31,7 +31,7 @@ export class CapitalFlowComponent implements OnInit {
 
 
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   getlist() {
@@ -46,6 +46,22 @@ export class CapitalFlowComponent implements OnInit {
       this.data.error = err.error;
       this.data.isError();
     });
+  }
+
+  fontColor(type, num: number) {
+    if (type === 2 || (type === 3 && num < 0)) {
+      return 'blue';
+    } else {
+      return '';
+    }
+  }
+
+  borderColor(type, num: number) {
+    if (type === 2 || (type === 3 && num < 0)) {
+      return 'blueBorder';
+    } else {
+      return '';
+    }
   }
 
   color(status) {

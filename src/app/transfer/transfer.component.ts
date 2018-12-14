@@ -18,7 +18,7 @@ export class TransferComponent implements OnInit {
   ngOnInit() {
   }
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   withdraw() {

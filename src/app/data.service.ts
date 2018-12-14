@@ -153,6 +153,19 @@ export class DataService {
     return window.location.hash.split('/')[num];
   }
 
+  /**
+ * 获取本地缓存，如果为空，则返回param
+ * @param sessionName 本地缓存名
+ * @param param 本地缓存为空时，赋值的值
+ */
+  getSessionOrParam(sessionName, param) {
+    if (!this.isNull(this.getSession(sessionName))) {
+      return this.getSession(sessionName);
+    } else {
+      return param;
+    }
+  }
+
   resetStockHQ() {
     this.stockHQ = {
       'stockName': '',
@@ -229,6 +242,10 @@ export class DataService {
     } else {
       return 0;
     }
+  }
+
+  back() {
+    window.history.back();
   }
 
   /**

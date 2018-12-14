@@ -36,12 +36,18 @@ export class ZixuanComponent implements OnInit {
   };
   tablist: any;
   timeout: any;
+  localStorge = `zixuan${this.data.getSession('opUserCode')}`;
   constructor(public data: DataService, public http: HttpService) { }
 
   ngOnInit() {
     this.data.clearInterval();
-    this.zixuanList = this.data.getLocalStorage('zixuan');
-    // this.generalTrend();
+    // localStorage.clear();
+    this.zixuanList = this.data.getLocalStorage(this.localStorge);
+    if (!this.data.isNull(this.zixuanList)) {
+      this.zixuanList = this.zixuanList.substr(this.zixuanList.indexOf(',') + 1, this.zixuanList.length);
+    }
+    console.log(this.zixuanList);
+    this.generalTrend();
     if (!this.data.isNull(this.zixuanList)) {
       this.hasZixuan = this.data.show;
       this.subscribe();
@@ -122,7 +128,7 @@ export class ZixuanComponent implements OnInit {
           this.data.clearInterval();
           this.hasZixuan = this.data.hide;
         }
-        this.data.setLocalStorage('zixuan', this.zixuanArray);
+        this.data.setLocalStorage(this.localStorge, this.zixuanArray);
       }
     }
 

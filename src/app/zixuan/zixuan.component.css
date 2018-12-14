@@ -99,6 +99,7 @@
   display: flex;
   height: 90px;
   background: #fff;
+  width: 100vw;
 }
 
 .tabs .tabs-div2 {

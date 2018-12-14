@@ -41,21 +41,21 @@
     </div>
   </div>
   <div class="zixuan-list">
-    <div class="table-flex2" [@showDelete]="show" *ngFor='let a of list' (click)='goto2(a.stockCode)'>
+    <div class="table-flex2" [@showDelete]="show" *ngFor='let a of list'>
       <div>
         <!-- <a class="delete-btn" (click)='del(a.stockCode)'></a> -->
         <img class="delete-btn" src="./assets/images/del.png" (click)='del(a.stockCode)'>
       </div>
-      <div>
+      <div (click)='goto2(a.stockCode)'>
         {{a.stockName}} - {{a.stockCode}}
       </div>
-      <div>
+      <div (click)='goto2(a.stockCode)'>
         {{a.lastPrice | toFixed}}
       </div>
-      <div class="{{fontColor(a.upRatio)}}">
+      <div (click)='goto2(a.stockCode)' class="{{fontColor(a.upRatio)}}">
         {{a.upRatio}}
       </div>
-      <div class="{{fontColor(a.diff)}}">
+      <div (click)='goto2(a.stockCode)' class="{{fontColor(a.diff)}}">
         {{a.diff}}
       </div>
     </div>

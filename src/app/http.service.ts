@@ -13,7 +13,7 @@ export class HttpService {
   constructor(public http: HttpClient, public data: DataService) {
     console.log(location.protocol);
     // this.host = location.protocol + '//218.85.23.217:8082/option/';
-    this.host = 'https://biz.hankuntech.com/option/';
+    this.host = 'http://101.132.65.124:10007/tnproxyWF/';
     this.ws = this.host + 'webSocket';
   }
 
@@ -209,7 +209,7 @@ export class HttpService {
    * 模糊查询股票
    */
   searchStock(code) {
-    return this.POST(this.host + 'tntg/stock?input=' + code, {});
+    return this.http.post(this.host + 'tntg/stock?input=' + code, {});
   }
 
   /**
@@ -265,13 +265,13 @@ export class HttpService {
    * 自选股订阅
    */
   zixuanSubscribe(string) {
-    return this.http.post(this.host + 'push/subscribe/' + string, {}, this.data.getHeader());
+    return this.http.post(this.host + 'push/subscribe/' + string, {});
   }
 
   /**
    * 获取自选股行情
    */
   zixuanDetail(string) {
-    return this.http.post(this.host + 'push/self/' + string, {}, this.data.getHeader());
+    return this.http.post(this.host + 'push/self/' + string, {});
   }
 }

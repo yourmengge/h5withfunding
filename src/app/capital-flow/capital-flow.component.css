@@ -63,7 +63,7 @@
   overflow-y: auto;
 }
 
-.flow-list .icon {
+.flow-list .icon span {
   width: 50px;
   height: 50px;
   display: inline-block;
@@ -73,6 +73,12 @@
   border: solid 1px #b00e23;
   border-radius: 50%;
   color: #b00e23;
+  font-size: .8rem;
+}
+
+.blueBorder {
+  border: solid 1px #145c90 !important;
+  color: #145c90 !important;
 }
 
 .status {

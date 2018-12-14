@@ -63,8 +63,8 @@
     </tr>
     <tr (click)='chedan(a)' *ngFor='let a of list'>
       <td>
-        <span class="span {{a.appointTypeDesc === '卖'?'blue':''}}">
-          {{a.appointType === 1?'买':'卖'}}
+        <span class="span {{a.appointType == 2?'blue':''}}">
+          {{a.appointType == 1?'买':'卖'}}
         </span>
         <p>
           {{a.stockName}}

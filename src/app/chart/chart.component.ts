@@ -84,7 +84,7 @@ export class ChartComponent implements OnInit, DoCheck, OnDestroy {
 
   back() {
     this.data.removeSession('optionCode');
-    window.history.back();
+    this.data.back();
   }
 
   /**

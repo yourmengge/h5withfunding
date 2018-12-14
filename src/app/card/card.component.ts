@@ -12,6 +12,7 @@ export class CardComponent implements OnInit {
   provinceList: any;
   cityList: any;
   branchesList: any;
+  filledIn: boolean;
   id: any;
   cardInfo = {
     id: '',
@@ -46,7 +47,7 @@ export class CardComponent implements OnInit {
   }
 
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   // 获取银行列表
@@ -93,11 +94,14 @@ export class CardComponent implements OnInit {
   getCard() {
     this.http.getCard().subscribe(res => {
       if (!this.data.isNull(res)) {
+        this.filledIn = true;
         this.cardInfo = Object.assign(this.cardInfo, res);
         this.id = this.cardInfo.id;
         this.getBranch();
         this.getProvinces();
         this.getCity();
+      } else {
+        this.filledIn = false;
       }
     }, err => {
       this.data.error = err.error;

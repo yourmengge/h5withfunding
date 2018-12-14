@@ -7,7 +7,7 @@
     <span class="span-title">
       开户银行
     </span>
-    <select name="" id="" [(ngModel)]="cardInfo.bankId" (change)='optionChange("bankId",cardInfo.bankId)'>
+    <select [disabled]='filledIn' name="" id="" [(ngModel)]="cardInfo.bankId" (change)='optionChange("bankId",cardInfo.bankId)'>
       <option value="{{item.value}}" *ngFor="let item of bankList">{{item.text}}</option>
     </select>
     <img src="./assets/images/right.png" class="right-icon" alt="">
@@ -17,7 +17,7 @@
     <span class="span-title">
       开户银行省份
     </span>
-    <select name="" id="" [(ngModel)]="cardInfo.provinceId" (change)='optionChange("provinceId",cardInfo.provinceId)'>
+    <select [disabled]='filledIn' name="" id="" [(ngModel)]="cardInfo.provinceId" (change)='optionChange("provinceId",cardInfo.provinceId)'>
       <option value="{{item.value}}" *ngFor="let item of provinceList">{{item.text}}</option>
     </select>
     <img src="./assets/images/right.png" class="right-icon" alt="">
@@ -26,7 +26,7 @@
     <span class="span-title">
       开户银行城市
     </span>
-    <select name="" id="" [(ngModel)]="cardInfo.cityId" (change)='optionChange("cityId",cardInfo.cityId)'>
+    <select [disabled]='filledIn' name="" id="" [(ngModel)]="cardInfo.cityId" (change)='optionChange("cityId",cardInfo.cityId)'>
       <option value="{{item.value}}" *ngFor="let item of cityList">{{item.text}}</option>
     </select>
     <img src="./assets/images/right.png" class="right-icon" alt="">
@@ -35,7 +35,7 @@
     <span class="span-title">
       开户银行支行
     </span>
-    <select name="" id="" [(ngModel)]="cardInfo.subBranchId">
+    <select [disabled]='filledIn' name="" id="" [(ngModel)]="cardInfo.subBranchId">
       <option value="{{item.value}}" *ngFor="let item of branchesList">{{item.text}}</option>
     </select>
     <img src="./assets/images/right.png" class="right-icon" alt="">
@@ -44,19 +44,19 @@
     <span class="span-title">
       卡号
     </span>
-    <input placeholder="请输入银行卡号" maxlength="30" type="text" [(ngModel)]="cardInfo.cardNo">
+    <input [readonly]='filledIn' placeholder="请输入银行卡号" maxlength="30" type="text" [(ngModel)]="cardInfo.cardNo">
   </div>
   <div class="list-item">
     <span class="span-title">
       户名
     </span>
-    <input placeholder="请输入银行卡户名" maxlength="10" type="text" [(ngModel)]="cardInfo.userName">
+    <input [readonly]='filledIn' placeholder="请输入银行卡户名" maxlength="10" type="text" [(ngModel)]="cardInfo.userName">
   </div>
   <div class="list-item">
     <span class="span-title">
       身份证
     </span>
-    <input placeholder="请输入身份证" maxlength="18" type="text" [(ngModel)]="cardInfo.identityNo">
+    <input [readonly]='filledIn' placeholder="请输入身份证" maxlength="18" type="text" [(ngModel)]="cardInfo.identityNo">
   </div>
   <div class="list-item">
     <span class="span-title">

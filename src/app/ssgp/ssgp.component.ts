@@ -12,6 +12,7 @@ export class SsgpComponent implements OnInit {
   list: any;
   zixuanList = '';
   zixuanArray = [];
+  localStorge = `zixuan${this.data.getSession('opUserCode')}`;
   constructor(public data: DataService, public http: HttpService) {
 
   }
@@ -42,8 +43,8 @@ export class SsgpComponent implements OnInit {
    * 添加自选股
    */
   add(code) {
-    if (!this.data.isNull(this.data.getLocalStorage('zixuan'))) {
-      this.zixuanList = this.data.getLocalStorage('zixuan');
+    if (!this.data.isNull(this.data.getLocalStorage(this.localStorge))) {
+      this.zixuanList = this.data.getLocalStorage(this.localStorge);
     }
     this.zixuanArray = this.zixuanList.split(',');
     for (const i in this.zixuanArray) {
@@ -53,14 +54,19 @@ export class SsgpComponent implements OnInit {
       }
     }
     if (this.zixuanList === '') {
-      this.zixuanList = code;
+      this.zixuanList = `${this.data.opUserCode},${code}`;
     } else {
-      this.zixuanList = code + ',' + this.zixuanList;
+      this.zixuanList = `${this.zixuanList},${code}`;
     }
 
     this.data.ErrorMsg('添加成功');
-    this.data.setLocalStorage('zixuan', this.zixuanList);
+    this.data.setLocalStorage(this.localStorge, this.zixuanList);
     console.log(this.zixuanList);
+  }
+
+  goto2(code) {
+    this.data.setSession('optionCode', code);
+    this.data.goto('chart');
   }
 
 }

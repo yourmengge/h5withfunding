@@ -1,37 +1,27 @@
 .content {
     display: flex;
     width: 100vw;
+    margin-top: 5px;
     background: #fff;
     text-align: center;
-    border-top: solid 1px #eaeaea;
-    border-bottom: solid 1px #eaeaea;
-    margin-bottom: 5px;
 }
 
-.left-div {
-    padding: 5px 2%;
-}
-
-.left-line {
-    height: 40px;
-    line-height: 40px;
-}
-
-.left-content {
-    float: right;
+.content .left-div {
+    flex: 6;
+    padding: 0 5px;
 }
 
 .content .left-div div {
-    margin: 11px 0;
+    margin: 8px 0;
 }
 
 .input {
     border: solid 1px #b00e23;
-    font-size: 1.1rem;
+    font-size: 1rem;
     padding: 0 4px;
     width: 94%;
-    height: 32px;
-    line-height: 32px;
+    height: 30px;
+    line-height: 30px;
     border-radius: none;
 }
 
@@ -43,83 +33,86 @@
     border: none;
     color: #fff;
     background: #b00e23;
-    width: 34px;
+    width: 46px;
     outline: none;
     font-size: 2rem;
-    height: 34px;
-    line-height: 29px;
+    height: 32px;
+    line-height: 26px;
     margin: 0 !important;
-    text-align: center;
-}
-
-.add-down input {
-    width: 100px;
 }
 
 .green {
-    float: left;
     color: green;
 }
 
 .red {
-    float: right;
     color: red;
-}
-
-.four-btn {
-    float: right;
 }
 
 .four-btn div {
     float: left;
-    width: 30px;
-    height: 30px;
-    text-align: center;
-    line-height: 30px;
     font-size: 0.8rem;
-    margin: 5px !important;
+    padding: 3px 5px;
+    margin: 0 5px !important;
     border-radius: 0;
-    border: solid 1px #eaeaea;
+    border: solid 1px #ccc;
+}
+
+.buy {
+    display: flex;
+    width: 100%;
+    margin: 10px 0 !important;
+}
+
+.fullcount{
+    margin: 0;
+    font-size: .8rem;
+    height: 13px;
+}
+
+.fullcount span:first-child{
+    float: left;
+}
+
+.fullcount span:last-child{
+    float: right;
+}
+
+.buy div {
+    flex: 1;
+    background: #b00e23;
+    color: #fff;
+    height: 30px;
+    line-height: 30px;
+    border: solid 1px #b00e23;
+    margin: 0 !important;
+}
+
+.clear {
+    background: #f8f8f8 !important;
+    border: solid 1px #ddd !important;
+    color: #000 !important;
 }
 
 .right-div {
-    display: flex;
-    border-top: solid 1px #eaeaea;
-    border-bottom: solid 1px #eaeaea;
-    padding: 0 2%;
-    width: calc(100vw - 4%);
-}
-
-.right-div div {
-    flex: 1;
-    padding: 5px;
-}
-
-.right-div div:first-child {
-    border-right: solid 1px #eaeaea;
+    flex: 5;
+    border-left: solid 1px #ccc;
 }
 
 .right-div p {
     margin: 2px;
     font-size: .9rem;
     display: flex;
-    height: 24px;
-    line-height: 24px;
+    height: 21px;
+    line-height: 21px;
 }
 
 .right-div p span {
     flex: 1;
-    text-align: center;
-}
-.right-div p span:first-child{
-    text-align: left;
-}
-.right-div p span:last-child{
-    text-align: right;
 }
 
 .line {
-    border-bottom: dashed 1px #eaeaea;
+    border-bottom: dashed 1px #ccc;
     height: 1px !important;
 }
 
@@ -128,17 +121,17 @@
     position: relative;
     margin-top: -25px;
     font-size: .9rem;
-    margin-right: 20px;
-}
-
-.gpmc span{
-    margin-left: 10px;
+    margin-right: 5px;
 }
 
 .green-red {
     margin-top: -10px !important;
     margin-bottom: 5px;
     height: 17px;
+}
+
+.four-btn {
+    height: 20px;
 }
 
 .four-btn-active {
@@ -158,6 +151,15 @@
     background: #145c90;
 }
 
-.search-input{
-    margin: 10px 0;
+.fenshi-div {
+    background: #fff;
+}
+
+.fenshi-div p {
+    padding: 5px 10px;
+    margin: 5px 0;
+}
+
+.shifen span{
+    margin: 0 10px;
 }

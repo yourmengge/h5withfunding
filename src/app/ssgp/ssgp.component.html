@@ -11,10 +11,10 @@
 </div>
 <div class="main-content">
   <div class="content-flex" *ngFor='let a of list'>
-    <div class="flex-1">
+    <div class="flex-1" (click)='goto2(a.stockCode)'>
       {{a.stockCode}}
     </div>
-    <div class="flex-2">
+    <div class="flex-2" (click)='goto2(a.stockCode)'>
       {{a.stockName}}
     </div>
     <div class="flex-3">

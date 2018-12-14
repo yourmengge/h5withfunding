@@ -33,7 +33,7 @@ export class NewsDetailComponent implements OnInit {
   }
 
   back() {
-    window.history.back();
+    this.data.back();
   }
 
 }

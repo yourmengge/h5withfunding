@@ -40,7 +40,7 @@ export class BankcardComponent implements OnInit {
   }
 
   back() {
-    window.history.back();
+    this.data.back();
   }
 
   pay() {
