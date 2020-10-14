@@ -1,37 +1,30 @@
-<div class="fenshi-div" *ngIf="stockCode.length==6">
-  <p class="shifen">最新价：{{stockHQ.lastPrice | round4}} <span [class]='HQColor(stockHQ.upDiff)'>{{stockHQ.upDiff}}</span>
+<div class="fenshi-div" *ngIf="showChart">
+  <p class="shifen">最新价：{{stockHQ.lastPrice | toFixed:stockHQ.stockCode}} <span [class]='color(stockHQ.upDiff)'>{{stockHQ.upDiff}}</span>
     <span [class]='color(stockHQ.upRatio)'>{{stockHQ.upRatio}}</span></p>
-  <canvas style="margin-left:10px;" id="trendLine"></canvas>
+  <!-- <canvas style="margin-left:10px;" id="trendLine"></canvas> -->
+</div>
+<div class="fenshi-div2" *ngIf="showChart">
+  <p class="shifen2">
+    <span *ngFor="let item of chartTypeList" [class]='item.type == chartType?"active":""' (click)='changeType(item.type)'>{{item.name}}</span>
+  </p>
+  <!-- <canvas style="margin-left:10px;" id="trendLine"></canvas> -->
+  <div id="chart"></div>
 </div>
 <div class="content">
-
   <div class="left-div {{classType}}">
     <div>
       <input class="input" (keyup)='getQuotation()' maxlength="6" type="text" placeholder="股票代码/首字母" [(ngModel)]='stockCode'>
       <span class="gpmc">{{stockName}}</span>
-    </div>
-    <div class="search-div" [@showDelete]="show">
-      <div (click)='selectGP(a)' *ngFor='let a of list'>
-        <div>
-          <span>{{a.stockCode}}</span>
-        </div>
-        <div>
-          <span>{{a.stockName}}</span>
-        </div>
-        <div>
-          <span>{{a.pinYin}}</span>
-        </div>
-      </div>
     </div>
     <div class="add-down">
       <div class="down" (click)='count(-1)'>-</div>
       <input class="input" type="number" placeholder="{{text}}价" [(ngModel)]='appointPrice' style="text-align: center">
       <div class="add" (click)='count(1)'>+</div>
     </div>
-    <div class="green-red">
-      <span class="green" style="float:left;" (click)='selectPrice(stockHQ.lowPrice)'>跌停 {{stockHQ.lowPrice | toFixed}}</span>
-      <span class="red" style="float:right;" (click)='selectPrice(stockHQ.highPrice)'>涨停 {{stockHQ.highPrice |
-        toFixed}}</span>
+    <div class="green-red" style="    padding-top: 4px;">
+      <span class="green" style="float:left;" (click)='selectPrice(stockHQ.priceDownlimit)'>跌停
+        {{stockHQ.priceDownlimit}}</span>
+      <span class="red" style="float:right;" (click)='selectPrice(stockHQ.priceUplimit)'>涨停 {{stockHQ.priceUplimit}}</span>
     </div>
     <div class="left-content add-down ">
       <div class="down" (click)='count2(-1)'>-</div>
@@ -39,7 +32,7 @@
       <div class="add" (click)='count2(1)'>+</div>
 
     </div>
-    <p class="fullcount"><span>可买股数：{{fullcount}}</span><span>订单金额：{{totalPrice(appointPrice,appointCnt)}}</span></p>
+    <p class="fullcount"><span>可{{classType=='BUY'?'买':'卖'}}股数：{{fullcount}}</span><span>订单金额：{{totalPrice(appointPrice,appointCnt)}}</span></p>
     <div class="four-btn">
       <div class="{{ccount === 'full'?'four-btn-active':''}}" (click)='selectCount("full")'>全仓</div>
       <div class="{{ccount === 'half'?'four-btn-active':''}}" (click)='selectCount("half")'>半仓</div>
@@ -56,55 +49,68 @@
   <div class="right-div">
     <p (click)='selectPrice(stockHQ.sellLevel.sellPrice05)'>
       <span>卖5</span>
-      <span class="{{HQColor(stockHQ.sellLevel.sellPrice05)}}">{{stockHQ.sellLevel.sellPrice05 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice05)}}">{{stockHQ.sellLevel.sellPrice05 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.sellLevel.sellVolume05 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.sellLevel.sellPrice04)'>
       <span>卖4</span>
-      <span class="{{HQColor(stockHQ.sellLevel.sellPrice04)}}">{{stockHQ.sellLevel.sellPrice04 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice04)}}">{{stockHQ.sellLevel.sellPrice04 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.sellLevel.sellVolume04 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.sellLevel.sellPrice03)'>
       <span>卖3</span>
-      <span class="{{HQColor(stockHQ.sellLevel.sellPrice03)}}">{{stockHQ.sellLevel.sellPrice03 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice03)}}">{{stockHQ.sellLevel.sellPrice03 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.sellLevel.sellVolume03 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.sellLevel.sellPrice02)'>
       <span>卖2</span>
-      <span class="{{HQColor(stockHQ.sellLevel.sellPrice02)}}">{{stockHQ.sellLevel.sellPrice02 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice02)}}">{{stockHQ.sellLevel.sellPrice02 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.sellLevel.sellVolume02 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.sellLevel.sellPrice01)'>
       <span>卖1</span>
-      <span class="{{HQColor(stockHQ.sellLevel.sellPrice01)}}">{{stockHQ.sellLevel.sellPrice01 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.sellLevel.sellPrice01)}}">{{stockHQ.sellLevel.sellPrice01 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.sellLevel.sellVolume01 | numInt}}</span>
     </p>
     <p class="line"></p>
     <p (click)='selectPrice(stockHQ.buyLevel.buyPrice01)'>
       <span>买1</span>
-      <span class="{{HQColor(stockHQ.buyLevel.buyPrice01)}}">{{stockHQ.buyLevel.buyPrice01 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice01)}}">{{stockHQ.buyLevel.buyPrice01 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.buyLevel.buyVolume01 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.buyLevel.buyPrice02)'>
       <span>买2</span>
-      <span class="{{HQColor(stockHQ.buyLevel.buyPrice02)}}">{{stockHQ.buyLevel.buyPrice02 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice02)}}">{{stockHQ.buyLevel.buyPrice02 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.buyLevel.buyVolume02 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.buyLevel.buyPrice03)'>
       <span>买3</span>
-      <span class="{{HQColor(stockHQ.buyLevel.buyPrice03)}}">{{stockHQ.buyLevel.buyPrice03 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice03)}}">{{stockHQ.buyLevel.buyPrice03 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.buyLevel.buyVolume03 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.buyLevel.buyPrice04)'>
       <span>买4</span>
-      <span class="{{HQColor(stockHQ.buyLevel.buyPrice04)}}">{{stockHQ.buyLevel.buyPrice04 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice04)}}">{{stockHQ.buyLevel.buyPrice04 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.buyLevel.buyVolume04 | numInt}}</span>
     </p>
     <p (click)='selectPrice(stockHQ.buyLevel.buyPrice05)'>
       <span>买5</span>
-      <span class="{{HQColor(stockHQ.buyLevel.buyPrice05)}}">{{stockHQ.buyLevel.buyPrice05 | toFixed}}</span>
+      <span class="{{HQColor(stockHQ.buyLevel.buyPrice05)}}">{{stockHQ.buyLevel.buyPrice05 | toFixed:stockHQ.stockCode}}</span>
       <span>{{stockHQ.buyLevel.buyVolume05 | numInt}}</span>
     </p>
+  </div>
+</div>
+<div class="search-div" style='position: relative;top: -190px;' [@showDelete]="show">
+  <div (click)='selectGP(a)' *ngFor='let a of list'>
+    <div>
+      <span>{{a.stockCode}}</span>
+    </div>
+    <div>
+      <span>{{a.stockName}}</span>
+    </div>
+    <div>
+      <span>{{a.pinYin}}</span>
+    </div>
   </div>
 </div>
 <div style="margin-top:0px;">

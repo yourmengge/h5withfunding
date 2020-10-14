@@ -12,8 +12,9 @@ export class CardComponent implements OnInit {
   provinceList: any;
   cityList: any;
   branchesList: any;
-  filledIn: boolean;
   id: any;
+  filledIn: boolean;
+  filledIn2: boolean;
   cardInfo = {
     id: '',
     bankId: '',
@@ -27,8 +28,12 @@ export class CardComponent implements OnInit {
     cardNo: '',
     userName: '',
     identityNo: '',
-    mobile: ''
+    mobile: '',
+    alipayNo: '',
+    alipayName: ''
   };
+  isUpdate = 'false';
+  text = '绑定';
   constructor(public data: DataService, public http: HttpService) {
     this.id = '';
     this.bankList = this.data.selectOption;
@@ -39,6 +44,8 @@ export class CardComponent implements OnInit {
     this.cardInfo.cityId = '0';
     this.branchesList = this.data.selectOption;
     this.cardInfo.subBranchId = '0';
+    this.isUpdate = this.data.getSession('updateCard') || 'false';
+    this.text = this.isUpdate === 'true' ? '修改' : '绑定';
   }
 
   ngOnInit() {
@@ -64,6 +71,7 @@ export class CardComponent implements OnInit {
   getProvinces() {
     this.http.getProvinceList(this.cardInfo.bankId).subscribe((res: Array<any>) => {
       this.provinceList = this.data.selectOption.concat(res);
+      this.getCity();
     }, err => {
       this.data.error = err.error;
       this.data.isError();
@@ -74,6 +82,7 @@ export class CardComponent implements OnInit {
   getCity() {
     this.http.getCityList(this.cardInfo.bankId, this.cardInfo.provinceId).subscribe((res: Array<any>) => {
       this.cityList = this.data.selectOption.concat(res);
+      this.getBranch();
     }, err => {
       this.data.error = err.error;
       this.data.isError();
@@ -94,7 +103,12 @@ export class CardComponent implements OnInit {
   getCard() {
     this.http.getCard().subscribe(res => {
       if (!this.data.isNull(res)) {
-        this.filledIn = true;
+        if (this.isUpdate === 'true') {
+          this.filledIn = false;
+        } else {
+          this.filledIn = true;
+        }
+        this.filledIn2 = true;
         this.cardInfo = Object.assign(this.cardInfo, res);
         this.id = this.cardInfo.id;
         this.getBranch();
@@ -102,6 +116,7 @@ export class CardComponent implements OnInit {
         this.getCity();
       } else {
         this.filledIn = false;
+        this.filledIn2 = false;
       }
     }, err => {
       this.data.error = err.error;
@@ -114,32 +129,40 @@ export class CardComponent implements OnInit {
     this.cardInfo.bankName = this.getName(this.bankList, this.cardInfo.bankId);
     this.cardInfo.provinceName = this.getName(this.provinceList, this.cardInfo.provinceId);
     this.cardInfo.cityName = this.getName(this.cityList, this.cardInfo.cityId);
-    this.cardInfo.subBranchName = this.getName(this.branchesList, this.cardInfo.subBranchId);
+    // this.cardInfo.subBranchName = this.getName(this.branchesList, this.cardInfo.subBranchId);
     if (this.cardInfo.bankId === '0') {
       this.data.ErrorMsg('请选择开户银行');
     } else if (this.cardInfo.provinceId === '0') {
       this.data.ErrorMsg('请选择开户银行省份');
     } else if (this.cardInfo.cityId === '0') {
       this.data.ErrorMsg('请选择开户银行城市');
-    } else if (this.cardInfo.subBranchId === '0') {
-      this.data.ErrorMsg('请选择开户银行支行');
+    } else if (this.cardInfo.subBranchName === '') {
+      this.data.ErrorMsg('请输入开户银行支行');
     } else if (this.cardInfo.cardNo.length === 0) {
       this.data.ErrorMsg('请输入正确的银行卡号');
     } else if (this.cardInfo.userName.length === 0) {
       this.data.ErrorMsg('请输入正确的银行卡户名');
     } else if (this.cardInfo.identityNo.length !== 18) {
       this.data.ErrorMsg('请输入正确的身份证号');
-    } else if (this.cardInfo.mobile.length !== 11) {
-      this.data.ErrorMsg('请输入正确的手机号码');
+    } else if (this.cardInfo.identityNo.length !== 18) {
+      this.data.ErrorMsg('请输入正确的身份证号');
+    } else if (this.cardInfo.alipayNo.length === 0) {
+      this.data.ErrorMsg('请输入支付宝账号');
+    } else if (this.cardInfo.alipayName.length === 0) {
+      this.data.ErrorMsg('请输入支付宝姓名');
     } else {
-      this.http.bandCard(this.cardInfo).subscribe(res => {
-        this.data.ErrorMsg('绑定成功');
-        this.getCard();
+      if (this.isUpdate === 'false' && this.cardInfo.id !== '') {
         this.back();
-      }, err => {
-        this.data.error = err.error;
-        this.data.isError();
-      });
+      } else {
+        this.http.bandCard(this.cardInfo).subscribe(res => {
+          this.data.ErrorMsg(`${this.text}成功`);
+          this.getCard();
+          this.back();
+        }, err => {
+          this.data.error = err.error;
+          this.data.isError();
+        });
+      }
     }
 
   }
@@ -159,12 +182,18 @@ export class CardComponent implements OnInit {
     if (value !== 0) {
       switch (name) {
         case 'bankId':
+          this.cardInfo.provinceId = '0';
+          this.cardInfo.cityId = '0';
+          this.cardInfo.subBranchId = '0';
           this.getProvinces();
           break;
         case 'provinceId':
+          this.cardInfo.cityId = '0';
+          this.cardInfo.subBranchId = '0';
           this.getCity();
           break;
         case 'cityId':
+          this.cardInfo.subBranchId = '0';
           this.getBranch();
           break;
         default:

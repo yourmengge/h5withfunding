@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, DoCheck } from '@angular/core';
 import { HttpService } from '../http.service';
 import { DataService } from '../data.service';
 declare var StockChart: any;
+declare var EmchartsMobileTime: any;
+declare var EmchartsMobileK: any;
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
@@ -23,8 +25,26 @@ export class ChartComponent implements OnInit, DoCheck, OnDestroy {
     exercisePrice: '',
     preClosePrice: ''
   };
+  chartTypeList = [{
+    name: '分时',
+    type: 'T1'
+  }, {
+    name: '五日',
+    type: 'T5'
+  }, {
+    name: '日K',
+    type: 'DK'
+  }, {
+    name: '周K',
+    type: 'WK'
+  }, {
+    name: '月K',
+    type: 'MK'
+  }];
+  chartType = 'T1';
   constructor(public data: DataService, public http: HttpService) {
     this.stockCode = this.data.getSession('optionCode');
+    this.data.searchStockCode = this.stockCode;
     this.isconnect = false;
     this.data.resetStockHQ();
     this.stockHQ = this.data.stockHQ;
@@ -51,22 +71,69 @@ export class ChartComponent implements OnInit, DoCheck, OnDestroy {
     });
   }
 
-  getFenshituList() {
-    this.http.fenshituList(this.stockCode).subscribe((res) => {
-      this.price = [];
-      this.volumes = [];
-      Object.keys(res).forEach(key => {
-        this.price.push(res[key].lastPrice);
-        this.volumes.push(res[key].incrVolume);
-      });
-      this.fenshitu();
-      this.data.timeoutFenshi = setTimeout(() => {
-        this.getFenshituList();
-      }, 30000);
-    }, (err) => {
-      this.data.error = err.error;
-      this.data.isError();
+  changeType(type) {
+    window.clearTimeout(this.data.timeoutFenshi);
+    this.chartType = type;
+    if (this.chartType === 'T1' || this.chartType === 'T5') {
+      this.getFenshituList();
+    } else {
+      this.KLine();
+    }
+  }
+
+  KLine() {
+    const marketType = (this.stockCode.substr(0, 1) === '5' || this.stockCode.substr(0, 1) === '6') ? '1' : '2';
+    const chart = new EmchartsMobileK({
+      container: 'chart',
+      type: this.chartType,
+      code: `${this.stockCode}${marketType}`,
+      width: document.body.clientWidth,
+      height: 200,
+      dpr: 2,
+      showVMark: true
     });
+    // 调用绘图方法
+    chart.draw();
+
+    this.data.timeoutFenshi = setTimeout(() => {
+      this.KLine();
+    }, 30000);
+  }
+
+  getFenshituList() {
+    const marketType = (this.stockCode.substr(0, 1) === '5' || this.stockCode.substr(0, 1) === '6') ? '1' : '2';
+    const chart = new EmchartsMobileTime({
+      container: 'chart',
+      type: this.chartType,
+      code: `${this.stockCode}${marketType}`,
+      width: document.body.clientWidth,
+      height: 180,
+      dpr: 2
+    });
+    // 调用绘图方法
+    chart.draw();
+
+    this.data.timeoutFenshi = setTimeout(() => {
+      this.getFenshituList();
+    }, 30000);
+
+
+
+    // this.http.fenshituList(this.stockCode).subscribe((res) => {
+    //   this.price = [];
+    //   this.volumes = [];
+    //   Object.keys(res).forEach(key => {
+    //     this.price.push(res[key].lastPrice);
+    //     this.volumes.push(res[key].totalVolume);
+    //   });
+    //   this.fenshitu();
+    //   this.data.timeoutFenshi = setTimeout(() => {
+    //     this.getFenshituList();
+    //   }, 30000);
+    // }, (err) => {
+    //   this.data.error = err.error;
+    //   this.data.isError();
+    // });
   }
 
   fenshitu() {
@@ -121,9 +188,13 @@ export class ChartComponent implements OnInit, DoCheck, OnDestroy {
   }
 
   color(string) {
+
     if (!this.data.isNull(string)) {
+      string = string.toString();
       if (string.indexOf('-') >= 0) {
         return 'green';
+      } else {
+        return 'red';
       }
     }
   }

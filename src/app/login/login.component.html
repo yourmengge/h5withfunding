@@ -10,11 +10,14 @@
       <img src="./assets/images/pwd.png" alt="">
       <input type="password" placeholder="登录密码" [(ngModel)]='password'>
     </div>
+    <div class="rememberPwd">
+      <input type="checkbox" [(ngModel)]="rememberPwd"><span>记住密码</span>
+    </div>
     <button class="login-btn" (click)='login()'>登录</button>
-    <!-- <div class="signup-div">
+    <div class="signup-div">
       <span (click)='goto("signup")'>新用户注册</span> | 
       <span (click)='goto("forget")'>忘记密码？</span>
-    </div> -->
+    </div>
   </div>
   <div class="bottom-div">
   </div>

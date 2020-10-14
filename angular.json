@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/h5wf",
+            "outputPath": "dist/h5tncl_ryt",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -28,7 +28,10 @@
             "scripts": [
               "./src/assets/js/qrcode.js",
               "./src/assets/js/stock.js",
-              "./src/assets/js/ap.js"
+              "./src/assets/js/ap.js",
+              "./src/assets/js/charts.js",
+              "./src/assets/js/layer.js",
+              "./src/assets/js/swiper.js"
             ]
           },
           "configurations": {

@@ -1,7 +1,6 @@
 import { Component, DoCheck } from '@angular/core';
 import { DataService } from '../data.service';
 import { HttpService } from '../http.service';
-
 @Component({
   selector: 'app-jiaoyi',
   templateUrl: './jiaoyi.component.html',
@@ -9,6 +8,8 @@ import { HttpService } from '../http.service';
 })
 export class JiaoyiComponent implements DoCheck {
   public url: string;
+  routerState = true;
+  routerStateCode = 'active';
   public menuList: any;
   constructor(public data: DataService, public http: HttpService) {
     this.menuList = this.data.getCenterMenuList();

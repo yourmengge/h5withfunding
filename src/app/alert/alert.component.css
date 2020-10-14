@@ -1,0 +1,14 @@
+.alert {
+    bottom: 100px;
+    position: fixed;
+    z-index: 0618;
+    background: rgba(70, 70, 70, 0.8);
+    width: 80%;
+    left: 10%;
+    height: 40px;
+    border-radius: 7px;
+    line-height: 40px;
+    color: #fff;
+    text-align: center;
+  }
+  

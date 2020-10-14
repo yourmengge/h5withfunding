@@ -1,0 +1,91 @@
+<div class="navigation">
+  <div class="back" (click)='back()'></div>
+  <p class="navigation-title">策略</p>
+</div>
+<div class="tabs" *ngIf="!oneType">
+  <div (click)='selectType(item.id,item.money)' *ngFor="let item of typeList" [class]="item.id==type?'tabsActive':''">
+    <div class='icon {{item.class}}'></div>
+    <p>
+      {{item.text}}
+    </p>
+  </div>
+</div>
+<div class="zixuan-content">
+  <div class="tabs2">
+    <div (click)='tabs = 0' [class]="tabs == 0?'tabs2-active':''">
+      申请操盘
+    </div>
+    <div (click)='tabs = 1' [class]="tabs == 1?'tabs2-active':''">
+      我的持仓
+    </div>
+  </div>
+  <div class='tab-content {{oneType?"guge":""}}' *ngIf="tabs == 0">
+    <div class="money">
+      <p>
+        投入本金
+      </p>
+      <input type="number" [(ngModel)]="money">
+    </div>
+    <div class='flex-btn' *ngIf="userInfo.allottedScale !== '0'">
+      <button (click)='add(true)'>增配</button>
+      <button (click)='add(false)'>非增配</button>
+    </div>
+    <p class='p-first'>
+      请选择杠杆
+    </p>
+    <div class='multiple-div {{detail.length == 1?"singleDiv":""}}'>
+      <div (click)='goto(item.id,item.mul,item.financeFeeRate)' [class]="mulType == item.mul?'multiple-active':''"
+        *ngFor="let item of detail">
+        <span *ngIf="logo === 'daizong'">
+          {{item.mul + 1}}倍
+        </span>
+        <span *ngIf="logo !== 'daizong'">
+          {{item.mul}}倍
+        </span>
+        <p *ngIf="needShow">
+          {{amount(item.mul)}}万元
+        </p>
+        <p style="margin-top: 17px;" *ngIf="!needShow">
+          {{amount(item.mul)}}万元
+        </p>
+        <p *ngIf="needShow">
+          {{manageFeeFn(item.mul,item.financeFeeRate)}}元/{{dateType[type]}}
+        </p>
+      </div>
+    </div>
+    <!-- <button *ngIf="userInfo.allottedScale !== '0'" class='submit' (click)='submit()'>
+      结案
+    </button> -->
+  </div>
+  <div class='tab-content {{logo === "guge"?"guge":""}}' *ngIf="tabs == 1">
+    <app-chicang></app-chicang>
+  </div>
+</div>
+<div class="confirm" *ngIf="confirm">
+  <div>
+    <p class="title">
+      提示
+    </p>
+    <p class="content">
+      {{msgText}}
+    </p>
+    <p class='button'>
+      <button (click)='confirm=false;'>否</button>
+      <button (click)='ok()'>是</button>
+    </p>
+  </div>
+</div>
+<div class="confirm" *ngIf="confirm1">
+  <div>
+    <p class="title">
+      提示
+    </p>
+    <p class="content">
+      网络异常，无法获取倍率杠杆，点击刷新
+    </p>
+    <p class='button'>
+      <!-- <button (click)='confirm=false;'>否</button> -->
+      <button (click)='initData()'>刷新</button>
+    </p>
+  </div>
+</div>

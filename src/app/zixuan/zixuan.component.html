@@ -50,7 +50,7 @@
         {{a.stockName}} - {{a.stockCode}}
       </div>
       <div (click)='goto2(a.stockCode)'>
-        {{a.lastPrice | toFixed}}
+        {{a.lastPrice}}
       </div>
       <div (click)='goto2(a.stockCode)' class="{{fontColor(a.upRatio)}}">
         {{a.upRatio}}

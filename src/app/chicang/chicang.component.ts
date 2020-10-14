@@ -10,6 +10,7 @@ import { DataService } from '../data.service';
 export class ChicangComponent implements OnInit {
   public userInfo: DataService['userInfo'];
   isJiaoyi: any;
+  freezaFee: any;
   constructor(public data: DataService, public http: HttpService) { }
 
   ngOnInit() {
@@ -34,6 +35,7 @@ export class ChicangComponent implements OnInit {
   usercenter() {
     this.http.userCenter().subscribe((res: DataService['userInfo']) => {
       this.userInfo = res;
+      this.freezaFee = parseFloat(this.userInfo.lockScale) + parseFloat(this.userInfo.freezeScale);
       this.data.intervalCapital = setTimeout(() => {
         this.usercenter();
       }, 3000);
