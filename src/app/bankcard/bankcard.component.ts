@@ -11,8 +11,9 @@ export class BankcardComponent implements OnInit {
   amount: any;
   remark: any;
   userName: any;
+  confirm = false;
   payType: any;
-  cardInfro = { 'bankAccountName': '', 'bankCardNo': '', 'bankName': '', bankBranch: '', aliyPay: '', aliyPayName: '' };
+  cardInfro = { 'bankAccountName': '', 'bankCardNo': '', 'bankName': '', bankBranch: '', aliyPay: '', aliyPayName: '', aliyPayCodeUrl: '' };
   constructor(public data: DataService, public http: HttpService, private _clipboardService: ClipboardService) {
     this.amount = this.data.getSession('amount');
     this.userName = this.data.getSession('userName');
@@ -26,6 +27,11 @@ export class BankcardComponent implements OnInit {
   copy() {
     this.data.ErrorMsg('备注已复制');
     this._clipboardService.copyFromContent(this.remark);
+  }
+
+  copy1(text) {
+    this.data.ErrorMsg('已复制');
+    this._clipboardService.copyFromContent(text);
   }
 
   getPayCardInfo() {
@@ -47,13 +53,19 @@ export class BankcardComponent implements OnInit {
     this.data.loading = this.data.show;
     this.http.submitBankTrans(this.amount, this.payType === '2' ? 'BANK' : 'ALIPAY').subscribe(res => {
       this.data.loading = this.data.hide;
-      this.data.ErrorMsg('充值已提交，请尽快充值，等待后台审核');
-      setTimeout(() => {
-        window.history.go(-2);
-      }, 1000);
+      if (!this.data.isNull(this.cardInfro.aliyPayCodeUrl) && this.payType !== '2') {
+        location.href = `${location.href.split('#/')[0]}/assets/pay.html?url=${this.cardInfro.aliyPayCodeUrl.split('//')[1]}`;
+      } else {
+        // this.data.ErrorMsg('充值已提交，请尽快充值，等待后台审核');
+        this.confirm = true;
+      }
     }, (err) => {
       this.data.error = err.error;
       this.data.isError();
     });
+  }
+
+  ok() {
+    this.data.goto('main/usercenter');
   }
 }

@@ -32,7 +32,7 @@ export class SignupComponent implements OnInit {
       this.inviteCode = window.location.hash.split('?code=')[1].split('&')[0].replace(/%3D/g, '');
       this.type = this.data.getUrl(2).split('?code=')[0];
     } else {
-      this.inviteCode = '';
+      this.inviteCode = '1000';
       this.type = this.data.getUrl(2);
     }
 
@@ -86,8 +86,8 @@ export class SignupComponent implements OnInit {
       this.data.ErrorMsg('请输入正确的手机号码');
     } else if (this.code.length === 0) {
       this.data.ErrorMsg('请输入正确的验证码');
-    } else if (this.password.length < 6 || this.password.length > 12) {
-      this.data.ErrorMsg('密码长度必须大于6位不能超过12位');
+    } else if (!/^[a-zA-Z0-9]{6,12}$/.test(this.password)) {
+      this.data.ErrorMsg('密码长度必须大于6位不能超过12位字母和数字');
     } else if (this.inviteCode.length === 0 && this.needInvitedCode() && this.type === 'signup') {
       this.data.ErrorMsg('请输入邀请码');
     } else {

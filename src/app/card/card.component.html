@@ -1,6 +1,6 @@
 <div class="navigation">
   <div class="back" (click)='back()'></div>
-  <p class="navigation-title">绑定银行卡</p>
+  <p class="navigation-title">提现信息</p>
 </div>
 <div class="cell-list">
   <div class="list-item">
@@ -35,10 +35,11 @@
     <span class="span-title">
       开户银行支行
     </span>
-    <select [disabled]='filledIn' name="" id="" [(ngModel)]="cardInfo.subBranchId">
+    <!-- <select [disabled]='filledIn' name="" id="" [(ngModel)]="cardInfo.subBranchId">
       <option value="{{item.value}}" *ngFor="let item of branchesList">{{item.text}}</option>
-    </select>
-    <img src="./assets/images/right.png" class="right-icon" alt="">
+    </select> -->
+    <input [readonly]='filledIn' placeholder="请输入银行支行" maxlength="30" type="text" [(ngModel)]="cardInfo.subBranchName">
+    <!-- <img src="./assets/images/right.png" class="right-icon" alt=""> -->
   </div>
   <div class="list-item">
     <span class="span-title">
@@ -50,22 +51,34 @@
     <span class="span-title">
       户名
     </span>
-    <input [readonly]='filledIn' placeholder="请输入银行卡户名" maxlength="10" type="text" [(ngModel)]="cardInfo.userName">
+    <input [readonly]='filledIn2' placeholder="请输入银行卡户名" maxlength="10" type="text" [(ngModel)]="cardInfo.userName">
   </div>
   <div class="list-item">
     <span class="span-title">
       身份证
     </span>
-    <input [readonly]='filledIn' placeholder="请输入身份证" maxlength="18" type="text" [(ngModel)]="cardInfo.identityNo">
+    <input [readonly]='filledIn2' placeholder="请输入身份证" maxlength="18" type="text" [(ngModel)]="cardInfo.identityNo">
   </div>
   <div class="list-item">
     <span class="span-title">
       手机
     </span>
-    <input placeholder="请输入手机号" maxlength="11" type="text" [(ngModel)]="cardInfo.mobile">
+    <input [readonly]='filledIn2' placeholder="请输入手机号" maxlength="11" type="text" [(ngModel)]="cardInfo.mobile">
+  </div>
+  <div class="list-item">
+    <span class="span-title">
+      支付宝账号
+    </span>
+    <input [readonly]='filledIn' placeholder="请输入支付宝账号"  type="text" [(ngModel)]="cardInfo.alipayNo">
+  </div>
+  <div class="list-item">
+    <span class="span-title">
+      支付宝姓名
+    </span>
+    <input [readonly]='filledIn' placeholder="请输入支付宝姓名"  type="text" [(ngModel)]="cardInfo.alipayName">
   </div>
 </div>
 
 <div class="bottom-btn" style="margin-top:20px;">
-  <div class="main" (click)='submit()'>完成</div>
+  <div class="main" (click)='submit()'>确定</div>
 </div>

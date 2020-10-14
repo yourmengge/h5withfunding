@@ -9,6 +9,7 @@
     </span>
     <span class="list-item-content" >
       {{cardInfro.aliyPay}}
+      <a (click)='copy1(cardInfro.aliyPay)'  class="copy" style='padding: 2px 3px;margin: 0;'>复制</a>
     </span>
   </div>
   <div class="list-item" *ngIf="payType==3">
@@ -17,6 +18,7 @@
     </span>
     <span class="list-item-content">
       {{cardInfro.aliyPayName}}
+      <a (click)='copy1(cardInfro.aliyPayName)'  class="copy" style='padding: 2px 3px;margin: 0;'>复制</a>
     </span>
   </div>
   <div class="list-item" *ngIf="payType==2">
@@ -33,6 +35,7 @@
     </span>
     <span class="list-item-content">
       {{cardInfro.bankAccountName}}
+      <a (click)='copy1(cardInfro.bankAccountName)'  class="copy" style='padding: 2px 3px;margin: 0;'>复制</a>
     </span>
   </div>
   <div class="list-item" *ngIf="payType==2">
@@ -41,6 +44,7 @@
     </span>
     <span class="list-item-content">
       {{cardInfro.bankCardNo}}
+      <a (click)='copy1(cardInfro.bankCardNo)'  class="copy" style='padding: 2px 3px;margin: 0;'>复制</a>
     </span>
   </div>
   <div class="list-item" *ngIf="payType==2">
@@ -60,7 +64,7 @@
     </span>
   </div>
   <div class="list-item" style="height:auto">
-    <span class="span-title" style="margin:auto">
+    <span class="span-title" style="margin:auto 10px">
       备注
     </span>
     <span class="list-item-content" style="width: 200px;line-height: 2;text-align: right;font-size: .9rem;">
@@ -72,5 +76,17 @@
   请点击 <button (click)='copy()' class="copy">复制</button>复制该备注信息
 </p>
 <div class="bottom-btn" style="margin-top:20px;">
-  <div class="main" (click)='pay()'>提交</div>
+  <div class="main" (click)='pay()'>去转账</div>
 </div>
+<div class="confirm" *ngIf="confirm">
+  <div>
+    <p class="title">
+      提示
+    </p>
+    <p class="content">
+      充值已提交，请尽快充值，等待后台审核
+    </p>
+    <button (click)='ok()'>好</button>
+  </div>
+</div>
+

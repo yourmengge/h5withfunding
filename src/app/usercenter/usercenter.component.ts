@@ -8,11 +8,31 @@ import { HttpService } from '../http.service';
   styleUrls: ['./usercenter.component.css']
 })
 export class UsercenterComponent implements OnInit, OnDestroy {
-  public menuList: any;
+  public menuList = [{
+    id: 'withdraw',
+    name: '提现',
+    class: 'withdraw'
+  }, {
+    id: 'recharge',
+    name: '充值',
+    class: 'sell'
+  }, {
+    id: 'capitalflow',
+    name: '资金流水',
+    class: 'capitalflow'
+  }, {
+    id: 'dealrecord',
+    name: '成交记录',
+    class: 'dealrecord'
+  }];
+  showWithDraw = true;
   public userInfo: DataService['userInfo'];
   public logo = 'hk';
+  freezaFee = 0;
+  ableScale = 0;
+  version = 1;
+  stupidFlag = '1'; // 为1表示策略模式，从balance判断，为0表示非策略模式，从ableScale判断
   constructor(public data: DataService, public http: HttpService) {
-    this.menuList = this.data.getCenterMenuList();
   }
   ngOnDestroy() {
     this.data.clearInterval();
@@ -22,18 +42,38 @@ export class UsercenterComponent implements OnInit, OnDestroy {
     this.data.clearInterval();
     this.userInfo = this.data.userInfo;
     this.usercenter();
+    this.getConfig();
   }
 
   goto(url) {
     this.data.goto('main/jiaoyi/' + url);
   }
 
+  setting() {
+    this.data.goto('setting');
+  }
+
+  getConfig() {
+    this.http.getConfig().subscribe(res => {
+      this.stupidFlag = res['resultInfo']['CTRL_USE_STRATEGY_MODE'];
+      if (res['resultInfo']['CTRL_USE_H5_DEPOSIT_WITHDRAW'] === '1') {
+        this.showWithDraw = true;
+      } else {
+        this.showWithDraw = false;
+      }
+    });
+  }
+
   usercenter() {
     this.http.userCenter().subscribe((res: DataService['userInfo']) => {
       this.userInfo = res;
-      const backscale = res['ableScale'] - res['allottedScale'];
+      this.version = this.userInfo['cashType'] === 10 ? 2 : 1;
+      this.data.version = this.version;
+      const backscale = this.stupidFlag === '1' ? res['balance'] : res['ableScale'];
       this.data.setSession('userName', res['accountName']);
-      this.data.setSession('backscale', backscale <= 0 ? 0 : backscale);
+      this.data.setSession('ableTakeoutScale', res['ableTakeoutScale']);
+      this.freezaFee = parseFloat(this.userInfo.lockScale) + parseFloat(this.userInfo.freezeScale);
+      this.data.setSession('backscale', parseFloat(backscale) <= 0 ? 0 : backscale);
       this.data.intervalCapital = setTimeout(() => {
         this.usercenter();
       }, 60000);
@@ -58,7 +98,7 @@ export class UsercenterComponent implements OnInit, OnDestroy {
     this.data.ErrorMsg('注销成功');
     this.data.isConnect = false;
     this.data.token = this.data.randomString(32);
-    this.data.setLocalStorage('token', this.data.token);
+    localStorage.removeItem('h5tncltoken');
     this.data.removeSession('opUserCode');
     setTimeout(() => {
       this.data.goto('main/login');
@@ -77,6 +117,8 @@ export class UsercenterComponent implements OnInit, OnDestroy {
       });
     } else {
       this.data.goto(url);
+      this.data.setSession('cashScale', this.userInfo['cashScale']);
+      this.data.setSession('allottedScale', this.userInfo.allottedScale);
     }
 
   }

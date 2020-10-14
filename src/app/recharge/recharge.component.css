@@ -1,71 +1,10 @@
-.money-div {
-  display: flex;
-  flex-flow: wrap;
-  background: #fff;
-}
-
-.money-div div {
-  width: 28.6%;
-  text-align: center;
-  height: 40px;
-  line-height: 40px;
-  border: solid 1px #dedede;
-  margin: 2%;
-  border-radius: 5px;
-}
-
-.recharge-input {
-  width: 90%;
-  border: none;
-  text-align: right;
-  padding: 5%;
-  background: none;
-}
-
-.pay-way {
-  margin-top: 10px;
-  background: #fff;
-}
-
-.pay-way img {
-  width: 30px;
-  height: 30px;
-  margin: 10px;
-  vertical-align: middle;
-}
-
-.pay-way span {
-  margin-left: 20px;
-}
-
-.radio {
-  background: url(../../assets/images/radio-button.png);
-  background-size: 100% 100%;
-  width: 20px;
-  height: 20px;
-  float: right;
-  margin-right: 20px;
-  margin-top: 15px;
-}
-
-.radio-none {
-  background: url(../../assets/images/radio02.png);
-  background-size: 100% 100%;
-  width: 23px;
-  height: 23px;
-  float: right;
-  margin-right: 18px;
-  margin-top: 12px;
-}
-
-.active {
-  background: #b00e23;
-  color: #fff;
-  border: solid 1px #b00e23;
-}
-
-.rechange{
+.rechange {
   height: calc(100vh - 50px);
   overflow-y: auto;
   margin-bottom: 40px;
+}
+
+.text {
+  padding: 0 20px;
+  color: #656565;
 }

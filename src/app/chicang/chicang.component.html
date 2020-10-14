@@ -1,27 +1,41 @@
 <div class="navigation" *ngIf="!isJiaoyi">
   <p class="navigation-title">资产</p>
 </div>
-<div class="chedang-div">
+<div class="chedang-div" *ngIf="version === 2">
+
   <div>
-    <!-- <div class="icon4"></div>
-        <p>
-            {{userInfo.totalScale}}
-        </p>
-        <p>
-            总资金
-        </p> -->
-    <div class="icon4 kyzj"></div>
+    <div class="icon4 djzj2"></div>
     <p>
-      {{userInfo.ableScale}}
+      {{userInfo.floatCashScale | round4}}
     </p>
     <p>
-      可用资金
+      浮动保证金
     </p>
   </div>
   <div>
-    <div class="icon4 djzj"></div>
+    <div class="icon4 kyzj2"></div>
     <p>
-      {{userInfo.lockScale}}
+      {{userInfo.limitAbleScale | round4}}
+    </p>
+    <p>
+      浮动可用
+    </p>
+  </div>
+</div>
+<div class="chedang-div" *ngIf="version === 1">
+  <div>
+    <div class="icon4 kyzj2"></div>
+    <p>
+      {{userInfo.limitAbleScale | round4}}
+    </p>
+    <p>
+      浮动可用
+    </p>
+  </div>
+  <div>
+    <div class="icon4 djzj2"></div>
+    <p>
+      {{freezaFee | round4}}
     </p>
     <p>
       冻结资金
@@ -30,23 +44,33 @@
 </div>
 <div class="chedang-div">
   <div>
-    <div class="icon4 gpsz"></div>
+    <div class="icon4 kyzj2"></div>
     <p>
-      {{userInfo.totalScale}}
+      {{userInfo.stockScale | round4}}
+    </p>
+    <p>
+      持股市值
+    </p>
+  </div>
+  <div *ngIf="version === 2">
+    <div class="icon4 gpsz2"></div>
+    <p>
+      {{userInfo.riskValue | round4}}
+    </p>
+    <p>
+      安全界线
+    </p>
+  </div>
+  <div *ngIf="version === 1">
+    <div class="icon4 gpsz2"></div>
+    <p>
+      {{userInfo.totalScale | round4}}
     </p>
     <p>
       总资产
     </p>
   </div>
-  <div>
-    <div class="icon4 kyzj"></div>
-    <p>
-      {{userInfo.stockScale}}
-    </p>
-    <p>
-      持仓权益
-    </p>
-  </div>
+
 </div>
 <div [class]="overflow(isJiaoyi)">
   <app-cclb></app-cclb>

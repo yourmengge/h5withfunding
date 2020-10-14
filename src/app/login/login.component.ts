@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   logo = 'login';
   public phone: string;
   public password: string;
+  showRegister = true;
   public header = {
     'Authorization': ''
   };
@@ -31,8 +32,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.data.setLocalStorage('token', '');
+    this.data.setLocalStorage('h5tncltoken', '');
     this.data.clearInterval();
+    this.getConfig();
     this.logo = this.data.logo;
   }
 
@@ -55,7 +57,6 @@ export class LoginComponent implements OnInit {
         this.data.opUserCode = this.phone;
         this.data.isConnect = false;
         this.data.token = res['resultInfo'];
-        this.data.setLocalStorage('token', this.data.token);
         // this.header = {
         //   'Authorization': res['itg']['token']
         // };
@@ -63,6 +64,7 @@ export class LoginComponent implements OnInit {
         // this.http.opts = new RequestOptions({ headers: headers });
         // this.data.setSession('header', JSON.stringify(this.header));
         this.data.goto('main/usercenter');
+        // this.data.redirectTo('#/main/usercenter');
       }, (err) => {
         this.data.error = err.error;
         this.data.isError();
@@ -71,6 +73,16 @@ export class LoginComponent implements OnInit {
       });
 
     }
+  }
+
+  getConfig() {
+    this.http.getConfig().subscribe(res => {
+      if (res['resultInfo']['CTRL_USE_H5_REGISTER'] === '1') {
+        this.showRegister = true;
+      } else {
+        this.showRegister = false;
+      }
+    });
   }
 
   goto(type) {

@@ -72,3 +72,7 @@
     margin: auto;
     margin-top: 7px;
 }
+
+.add-btn:active{
+    background: #ccc;
+}

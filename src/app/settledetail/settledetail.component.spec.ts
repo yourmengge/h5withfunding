@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuotalistComponent } from './quotalist.component';
+import { SettledetailComponent } from './settledetail.component';
 
-describe('QuotalistComponent', () => {
-  let component: QuotalistComponent;
-  let fixture: ComponentFixture<QuotalistComponent>;
+describe('SettledetailComponent', () => {
+  let component: SettledetailComponent;
+  let fixture: ComponentFixture<SettledetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuotalistComponent ]
+      declarations: [ SettledetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuotalistComponent);
+    fixture = TestBed.createComponent(SettledetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

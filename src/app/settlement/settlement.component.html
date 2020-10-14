@@ -1,0 +1,46 @@
+<div class="navigation">
+  <div class="back" (click)='back()'></div>
+  <p class="navigation-title">结算单</p>
+</div>
+<div class="date-div">
+  <span>查询日期</span>
+  <input type="date" name="" id="" (change)='change()' [(ngModel)]="startDate">
+  <span class="date-span">{{startDate}}</span>
+  <span>-</span>
+  <input type="date" name="" id="" (change)='change()' [(ngModel)]="endDate">
+  <span class="date-span">{{endDate}}</span>
+</div>
+<div class="flow-content cclb">
+  <table cellspacing="0">
+    <tr>
+      <td>
+        股票代码
+      </td>
+      <td>
+        买卖
+      </td>
+      <td>
+        成交数量/均价
+      </td>
+      <td>
+        交易/结算日期
+      </td>
+    </tr>
+    <tr *ngFor="let item of list" (click)="detail(item)">
+      <td>
+        {{item.stockNo}}
+      </td>
+      <td class="{{item.subType == '2'?'blue':'red'}}">
+        {{item.subTypeDesc}}
+      </td>
+      <td>
+        <p>{{item.dealCnt}}</p>
+        <p>{{item.dealAvrPrice}}</p>
+      </td>
+      <td>
+        <p>{{item.orderDate}}</p>
+        <p>{{item.settleDate}}</p>
+      </td>
+    </tr>
+  </table>
+</div>

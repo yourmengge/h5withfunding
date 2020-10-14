@@ -4,6 +4,8 @@ import { HttpService } from '../http.service';
 import { Response } from '@angular/http';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 declare var StockChart: any;
+declare var EmchartsMobileTime: any;
+declare var EmchartsMobileK: any;
 @Component({
     selector: 'app-buy',
     templateUrl: './buy.component.html',
@@ -51,6 +53,26 @@ export class BuyComponent implements DoCheck, OnDestroy {
     commission = 0; // 交易佣金
     price = [];
     volumes = [];
+    showChart = false; // 展示分时图
+    showLine = false;
+
+    chartTypeList = [{
+        name: '分时',
+        type: 'T1'
+    }, {
+        name: '五日',
+        type: 'T5'
+    }, {
+        name: '日K',
+        type: 'DK'
+    }, {
+        name: '周K',
+        type: 'WK'
+    }, {
+        name: '月K',
+        type: 'MK'
+    }];
+    chartType = 'T1';
     constructor(public data: DataService, public http: HttpService) {
         this.fullcount = '--';
         this.maxPrice = 10;
@@ -81,7 +103,7 @@ export class BuyComponent implements DoCheck, OnDestroy {
 
     handle(cnt) {
         let fee = this.appointPrice * cnt * this.ygsxf;
-        if (fee < 5) {
+        if (fee <= 5) {
             fee = 5;
         }
         if (this.classType === 'BUY') { // 买入手续费
@@ -106,6 +128,16 @@ export class BuyComponent implements DoCheck, OnDestroy {
         if (this.data.searchStockCode !== '' && this.data.searchStockCode.length === 6 && this.data.searchStockCode !== this.stockCode) {
             this.stockCode = this.data.searchStockCode;
             this.getGPHQ();
+        }
+    }
+
+    changeType(type) {
+        window.clearTimeout(this.data.timeoutFenshi);
+        this.chartType = type;
+        if (this.chartType === 'T1' || this.chartType === 'T5') {
+            this.getFenshituList();
+        } else {
+            this.KLine();
         }
     }
 
@@ -188,10 +220,13 @@ export class BuyComponent implements DoCheck, OnDestroy {
         this.stockHQ.upRatio = '';
         this.stockName = '';
         this.show = 'active';
-        const content = null;
+        window.clearTimeout(this.data.timeoutFenshi);
+        this.cancelSubscribe();
         this.http.searchStock(this.stockCode).subscribe((res) => {
             this.list = res;
-
+            // if (this.stockCode.length === 6 && !this.data.isNull(this.list[0])) {
+            //     this.selectGP(this.list[0]);
+            // }
         }, (err) => {
             this.data.error = err.error;
             this.data.isError();
@@ -199,30 +234,50 @@ export class BuyComponent implements DoCheck, OnDestroy {
         if (!this.connectStatus) {
 
         }
+
         if (this.stockCode.length === 0) {
             this.show = 'inactive';
+            this.showChart = false;
             this.clear();
         }
     }
 
-    getFenshituList() {
-        this.http.fenshituList(this.stockCode).subscribe((res) => {
-            this.price = [];
-            this.volumes = [];
-            Object.keys(res).forEach(key => {
-                this.price.push(res[key].lastPrice);
-                this.volumes.push(res[key].incrVolume);
-            });
-            this.fenshitu();
-            this.data.timeoutFenshi = setTimeout(() => {
-                this.getFenshituList();
-            }, 30000);
-        }, (err) => {
-            this.data.error = err.error;
-            this.data.isError();
+    KLine() {
+        const marketType = (this.stockCode.substr(0, 1) === '5' || this.stockCode.substr(0, 1) === '6') ? '1' : '2';
+        const chart = new EmchartsMobileK({
+            container: 'chart',
+            type: this.chartType,
+            code: `${this.stockCode}${marketType}`,
+            width: document.body.clientWidth,
+            height: 200,
+            dpr: 2,
+            showVMark: true
         });
+        // 调用绘图方法
+        chart.draw();
+
+        this.data.timeoutFenshi = setTimeout(() => {
+            this.KLine();
+        }, 30000);
     }
 
+    getFenshituList() {
+        const marketType = (this.stockCode.substr(0, 1) === '5' || this.stockCode.substr(0, 1) === '6') ? '1' : '2';
+        const chart = new EmchartsMobileTime({
+            container: 'chart',
+            type: this.chartType,
+            code: `${this.stockCode}${marketType}`,
+            width: document.body.clientWidth,
+            height: 180,
+            dpr: 2
+        });
+        // 调用绘图方法
+        chart.draw();
+
+        this.data.timeoutFenshi = setTimeout(() => {
+            this.getFenshituList();
+        }, 30000);
+    }
     fenshitu() {
         StockChart.drawTrendLine({
             id: 'trendLine',
@@ -246,9 +301,13 @@ export class BuyComponent implements DoCheck, OnDestroy {
             this.data.ErrorMsg('委托价格不能超过两位小数');
         } else if (this.data.isNull(this.appointPrice)) {
             this.data.ErrorMsg('委托价格不能为空');
-        } else if (this.appointPrice < parseFloat(this.stockHQ.lowPrice).toFixed(2)) {
+        } else if (this.classType === 'SELL' && this.stockHQ.sellLimit !== 0 && this.appointPrice < this.stockHQ.sellLimit) {
+            this.data.ErrorMsg('卖出价格不能低于买一价的98%');
+        } else if (this.classType === 'BUY' && this.stockHQ.buyLimit !== 0 && this.appointPrice > this.stockHQ.buyLimit) {
+            this.data.ErrorMsg('买入价格不能超过卖一价的102%');
+        } else if (this.appointPrice < parseFloat(this.stockHQ.priceDownlimit).toFixed(2)) {
             this.data.ErrorMsg('委托价格不能低于跌停价');
-        } else if (this.appointPrice > parseFloat(this.stockHQ.highPrice).toFixed(2)) {
+        } else if (this.appointPrice > parseFloat(this.stockHQ.priceUplimit).toFixed(2)) {
             this.data.ErrorMsg('委托价格不能高于涨停价');
         } else if (parseInt(this.appointCnt, 0) !== this.appointCnt) {
             this.data.ErrorMsg(`${this.text}数量必须是整数`);
@@ -258,19 +317,14 @@ export class BuyComponent implements DoCheck, OnDestroy {
             } else {
                 this.data.ErrorMsg(this.text + '数量必须是100的整数倍');
             }
-        } else if (this.appointCnt > this.fullcount) {
-            if (this.classType === 'BUY') {
-                this.data.ErrorMsg(`可用资金不足`);
-            } else {
-                this.data.ErrorMsg(`可卖数量不足`);
-            }
+        } else if (this.appointCnt > this.fullcount && this.classType === 'SELL') {
+            this.data.ErrorMsg(`可卖数量不足`);
         } else if (this.appointCnt <= 0) {
             this.data.ErrorMsg(`${this.text}数量必须大于0`);
             // } else if (this.appointCnt > 29) {
             //     this.data.ErrorMsg(this.text + '数量不能大于29张');
         } else {
             this.submitAlert = this.data.show;
-
         }
 
     }
@@ -287,7 +341,11 @@ export class BuyComponent implements DoCheck, OnDestroy {
         };
         this.http.order(this.classType, content, this.classType === 'BUY' ? 'OPEN' : 'CLOSE').subscribe((res: Response) => {
             if (res['success']) {
-                this.data.ErrorMsg('委托已提交');
+                if (this.data.isNull(res['resultInfo'])) {
+                    this.data.ErrorMsg('委托已提交');
+                } else {
+                    this.data.ErrorMsg(res['resultInfo']);
+                }
                 this.closeAlert();
                 this.clear();
             }
@@ -342,6 +400,8 @@ export class BuyComponent implements DoCheck, OnDestroy {
      * 清空
      */
     clear() {
+        window.clearTimeout(this.data.timeoutFenshi);
+        this.showChart = false;
         this.stockCode = '';
         this.appointPrice = '';
         this.appointCnt = '';
@@ -386,12 +446,17 @@ export class BuyComponent implements DoCheck, OnDestroy {
 
     // 选中合约
     getGPHQ() {
+        this.showChart = true;
         this.priceType = 1;
         this.ccount = '';
         this.show = 'inactive';
+        this.data.searchStockCode = this.stockCode;
         this.http.getGPHQ(this.stockCode, this.data.token).subscribe((res) => {
-            if (!this.data.isNull(res['resultInfo']['quotation'])) {
+            window.clearTimeout(this.data.timeoutFenshi);
+            if (this.stockCode.length === 6) {
                 this.getFenshituList();
+            }
+            if (!this.data.isNull(res['resultInfo']['quotation'])) {
                 this.data.stockHQ = res['resultInfo']['quotation'];
                 if (this.classType === 'BUY') {
                     this.appointCnt = 100;
@@ -428,12 +493,16 @@ export class BuyComponent implements DoCheck, OnDestroy {
     }
 
     color(string) {
+
         if (!this.data.isNull(string)) {
-          if (string.indexOf('-') >= 0) {
-            return 'green';
-          }
+            string = string.toString();
+            if (string.indexOf('-') >= 0) {
+                return 'green';
+            } else {
+                return 'red';
+            }
         }
-      }
+    }
 
     /**
      * 返回行情加个颜色

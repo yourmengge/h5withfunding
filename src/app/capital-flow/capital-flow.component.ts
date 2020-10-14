@@ -12,7 +12,7 @@ export class CapitalFlowComponent implements OnInit {
   endDate: any;
   list: any;
   constructor(public data: DataService, public http: HttpService) {
-    this.startDate = this.data.getTime('yyyy-MM-dd', new Date(this.data.beforeMonth()));
+    this.startDate = this.data.getTime('yyyy-MM-dd', this.data.beforeMonth());
     this.endDate = this.data.getTime('yyyy-MM-dd', new Date());
   }
 
@@ -41,7 +41,7 @@ export class CapitalFlowComponent implements OnInit {
       createTimeEnd: this.endDate
     };
     this.http.getFlow(data).subscribe(res => {
-      this.list = res['rows'];
+      this.list = res['resultInfo'];
     }, err => {
       this.data.error = err.error;
       this.data.isError();

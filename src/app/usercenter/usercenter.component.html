@@ -1,67 +1,104 @@
 <div class="navigation">
   <p class="navigation-title">个人中心</p>
-  <span class="logout" (click)='logout()'>注销</span>
+  <span class="logout" (click)='setting()'>更多</span>
 </div>
 <div class="main-content">
   <div class="header">
     <img src="./assets/images/{{logo}}.png" alt="" class="head">
+    <span class="user-status {{userInfo.riskStatus === 2?'status-stop':''}} {{userInfo.riskStatus === 3?'status-warm':''}}">{{userInfo.riskStatusDesc}}</span>
     <p class="name">{{userInfo.accountName}}</p>
-    <div>
+    <!-- <div>
       <button (click)='goto2("withdraw")' class="recharge">提现</button>
       <button (click)='goto2("recharge")' class="recharge">充值</button>
       <button (click)='goto2("capitalflow")' class="recharge">资金流水</button>
-    </div>
+    </div> -->
   </div>
-  <div class="menuList">
-    <div *ngFor='let a of menuList' class="footer-div {{url === a.id?'icon-active':''}}" (click)='goto(a.id)'>
-      <div class="icon {{a.class}}"></div>
+  <div class="menuList" *ngIf="showWithDraw">
+    <div *ngFor='let a of menuList' class="footer-div {{url === a.id?'icon-active':''}}" (click)='goto2(a.id)'>
+      <div class="icon-user {{a.class}}"></div>
       <p>
         {{a.name}}
       </p>
     </div>
   </div>
-  <div class="cszj">
+  <div class="cszj" *ngIf="showWithDraw">
+    <p>
+      账户余额
+    </p>
+    <p class="red">
+      {{userInfo.balance | round4}}
+    </p>
+    <img src="./assets/images/zc3.png" alt="">
+  </div>
+  <div class="cszj" *ngIf="version === 1">
     <p>
       期初规模
     </p>
     <p class="red">
-      {{userInfo.allottedScale}}
+      {{userInfo.allottedScale | round4}}
     </p>
     <img src="./assets/images/zc1.png" alt="">
   </div>
-  <div class="cszj">
+  <div class="cszj" *ngIf="version === 1">
     <p>
       总资产
     </p>
     <p class="red">
-      {{userInfo.totalScale}}
+      {{userInfo.totalScale | round4}}
     </p>
     <img src="./assets/images/zc2.png" alt="">
   </div>
   <div class="cszj">
     <p>
-      持仓权益
+      持股市值
     </p>
     <p class="red">
-      {{userInfo.stockScale}}
+      {{userInfo.stockScale | round4}}
     </p>
     <img src="./assets/images/zc3.png" alt="">
   </div>
-  <div class="kyzj">
+  <div class="cszj">
+    <p>
+      浮动可用
+    </p>
+    <p class="red">
+      {{userInfo.limitAbleScale | round4}}
+    </p>
+    <img src="./assets/images/zc2.png" alt="">
+  </div>
+  <div class="cszj">
+      <p>
+        浮动保证金
+      </p>
+      <p class="red">
+        {{userInfo.floatCashScale | round4}}
+      </p>
+      <img src="./assets/images/zc1.png" alt="">
+    </div>
+  <!-- <div class="kyzj">
     <div>
       <p> 可用资金 </p>
-      <p class="red"> {{userInfo.ableScale}}</p>
+      <p class="red"> {{userInfo.ableScale | round4}}</p>
     </div>
     <div>
       <p>
-        冻结资金
+        实际可用
       </p>
       <p class="red">
-        {{userInfo.lockScale}}
+        {{userInfo.limitAbleScale | round4}}
       </p>
     </div>
+  </div> -->
+  <div class="cszj">
+    <p>
+      冻结资金
+    </p>
+    <p class="red">
+      {{freezaFee | round4}}
+    </p>
+    <img src="./assets/images/zc1.png" alt="">
   </div>
 </div>
 <div style="height:50px;">
-  
+
 </div>

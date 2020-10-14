@@ -25,7 +25,7 @@ export class NewsDetailComponent implements OnInit {
     this.http.newsDetail(this.id).subscribe(res => {
       this.title = res['title'];
       this.date = res['createTime'];
-      this.html = res['body'];
+      this.html = res['content'];
     }, err => {
       this.data.error = err.error;
       this.data.isError();

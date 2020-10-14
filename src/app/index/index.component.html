@@ -1,37 +1,41 @@
 <div class="navigation">
   <p class="navigation-title">首页</p>
 </div>
-<div class="index">
+<div class="index-page">
   <div class="swiper-container">
-    <div class="swiper-wrapper">
+    <div class="swiper-wrapper" *ngIf="logo !== 'zxg'">
       <div class="swiper-slide"><img src="./assets/images/banner.jpg" alt=""></div>
       <div class="swiper-slide"><img src="./assets/images/banner2.jpg" alt=""></div>
     </div>
+    <div class="swiper-wrapper" *ngIf="logo === 'zxg'">
+      <div class="swiper-slide"><img src="./assets/images/banner4.jpg" alt=""></div>
+      <div class="swiper-slide"><img src="./assets/images/banner5.jpg" alt=""></div>
+    </div>
     <div class="swiper-pagination"></div>
   </div>
-  <div class="tabs">
-    <div class="tabs-div " (click)='goto2("zixuan")'>
-      <div class=" tab-icon" alt=""></div>
+  <div class="tabs2" *ngIf="logo === 'liangyun'">
+    <div class="tabs2-div " (click)='goto2("zixuan")'>
+      <div class=" tab2-icon" alt=""></div>
       <p>
         行情
       </p>
     </div>
-    <div class="tabs-div " (click)='goto2("jiaoyi")'>
-      <div class=" tab-icon jiaoyi" alt=""></div>
+    <div class="tabs2-div " (click)='goto2("jiaoyi")'>
+      <div class=" tab2-icon jiaoyi" alt=""></div>
       <p>
-        交易
+        策略
       </p>
     </div>
-    <div class="tabs-div " (click)='goto2("chicang")'>
-      <div class=" tab-icon zichan" alt=""></div>
+    <div class="tabs2-div " (click)='goto2("chicang")'>
+      <div class=" tab2-icon zichan" alt=""></div>
       <p>
-        资产
+        公告
       </p>
     </div>
-    <div class="tabs-div " (click)='goto2("usercenter")'>
-      <div class=" tab-icon geren" alt=""></div>
+    <div class="tabs2-div " (click)='goto2("usercenter")'>
+      <div class=" tab2-icon geren" alt=""></div>
       <p>
-        个人
+        直播间
       </p>
     </div>
   </div>
@@ -51,12 +55,34 @@
       </p>
     </div>
   </div>
-  <div class="zixun">
-    <div class="zixun-title">
-      <img src="./assets/images/zixun.png" alt="">
+  <div class="zixun" *ngIf="showWithDraw">
+    <div class='zixun-title'>
+      <span *ngFor="let item of title" (click)='selectType(item.id)'
+        [class]="item.id === type?'red':''">{{item.text}}</span>
+    </div>
+    <div class='zixun-content'>
+      <p class='p-first'>
+        资金：<span class='red'>{{detail[type].amount}}</span><span style='margin-right:30px;'>元起</span>
+        倍数：最高<span class='red'>{{logo === 'daizong' ? maxMul + 1 : maxMul}}</span><span>倍</span>
+      </p>
+      <p class='p-second' *ngIf="logo === 'guge'">
+        3分钟开户，自动延期
+      </p>
+      <p class='p-second' *ngIf="logo !== 'guge'">
+        3分钟开户，{{detail[type].date}}利息 <span class='red'>{{detail[type].money}}</span>{{detail[type].money2}}起
+      </p>
+      <p class='p-second' *ngIf="logo !== 'guge'">
+        自动延期
+      </p>
+      <a (click)='goto(type)'>立即申请</a>
+    </div>
+  </div>
+  <div class="news">
+    <div class="news-title">
+      <img src="./assets/images/zixun.gif" alt="">
       <span>资讯</span>
     </div>
-    <div class="zixun-content" *ngFor="let item of newslist" (click)='goto(item.id)'>
+    <div class="news-content" *ngFor="let item of newslist" (click)='goto2(item.id)'>
       <p class="content-title">
         {{item.title}}
       </p>
@@ -69,5 +95,5 @@
   </div>
 </div>
 <div style="height:50px;">
-  
+
 </div>

@@ -12,7 +12,6 @@ export class SsgpComponent implements OnInit {
   list: any;
   zixuanList = '';
   zixuanArray = [];
-  localStorge = `zixuan${this.data.getSession('opUserCode')}`;
   constructor(public data: DataService, public http: HttpService) {
 
   }
@@ -43,25 +42,35 @@ export class SsgpComponent implements OnInit {
    * 添加自选股
    */
   add(code) {
-    if (!this.data.isNull(this.data.getLocalStorage(this.localStorge))) {
-      this.zixuanList = this.data.getLocalStorage(this.localStorge);
-    }
-    this.zixuanArray = this.zixuanList.split(',');
-    for (const i in this.zixuanArray) {
-      if (code === this.zixuanArray[i]) {
+    if (this.data.isLogin) {
+      this.http.addStockList(code).subscribe(res => {
+        console.log(res);
+        this.data.ErrorMsg('添加成功');
+        setTimeout(() => {
+          this.data.goto('main/zixuan');
+        }, 1000);
+      }, err => {
+        this.data.error = err.error;
+        this.data.isError();
+      });
+    } else {
+      let temp = [];
+      if (!this.data.isNull(this.data.getLocalStorage('localZixuan'))) {
+        this.zixuanList = this.data.getLocalStorage('localZixuan');
+        temp = this.zixuanList.split(',');
+      }
+      if (this.zixuanList.indexOf(code) >= 0) {
         this.data.ErrorMsg('该股票已添加');
-        return;
+      } else {
+        temp.push(code);
+        this.zixuanList = temp.join();
+        this.data.ErrorMsg('添加成功');
+        this.data.setLocalStorage('localZixuan', this.zixuanList);
+        setTimeout(() => {
+          this.data.goto('main/zixuan');
+        }, 1000);
       }
     }
-    if (this.zixuanList === '') {
-      this.zixuanList = `${this.data.opUserCode},${code}`;
-    } else {
-      this.zixuanList = `${this.zixuanList},${code}`;
-    }
-
-    this.data.ErrorMsg('添加成功');
-    this.data.setLocalStorage(this.localStorge, this.zixuanList);
-    console.log(this.zixuanList);
   }
 
   goto2(code) {

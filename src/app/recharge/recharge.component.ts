@@ -15,6 +15,7 @@ export class RechargeComponent implements OnInit {
   isWeiChat = true;
   showWechatPay = false;
   showAliPay = false;
+  payWayConfig = [];
   constructor(public http: HttpService, public data: DataService) {
     this.money = '1000';
     this.inputMoney = '';
@@ -37,6 +38,48 @@ export class RechargeComponent implements OnInit {
       this.showAliPay = false;
       this.payType = 2;
     }
+    this.getPayWay();
+  }
+
+  getPayWay() {
+    this.http.getPayWay().subscribe(res => {
+      const array: Array<any> = res['resultInfo'];
+      array.forEach(element => {
+        const data = {
+          index: 1,
+          name: '',
+          pic: '',
+          type: '',
+          fee: ''
+        };
+        data.type = element.type;
+        data.fee = element.fee;
+        switch (element.type) {
+          case 'bank':
+            data.name = '银行卡转账（线下）';
+            data.pic = 'bank';
+            data.index = 2;
+            break;
+          case 'alipay':
+            data.name = '支付宝支付（线下）';
+            data.pic = 'ali';
+            data.index = 3;
+            break;
+          case 'hongbo':
+            data.name = '第三方支付';
+            data.pic = 'yinlian';
+            data.index = 4;
+            break;
+          case 'alipay_online':
+            data.name = '支付宝支付';
+            data.pic = 'ali';
+            data.index = 1;
+            break;
+        }
+        this.payWayConfig.push(data);
+        this.payType = this.payWayConfig[0].index;
+      });
+    });
   }
 
   back() {
@@ -66,41 +109,52 @@ export class RechargeComponent implements OnInit {
   pay() {
     if (this.data.Decimal(this.money) <= 2 && this.money > 0 && this.money !== null) {
       if (this.payType === 1) { // 支付宝支付
-        if (this.isWeiChat) {
-          _AP.pay(this.http.host + `/alipay/sign?totalAmount=${this.money}&token=${this.data.getToken()}`);
-        } else {// 普通浏览器
-          this.http.aliPay(this.money).subscribe(res => {
-            // 支付方法
-            const div = document.createElement('div');
-            div.innerHTML = res;
-            document.body.appendChild(div);
-            document.forms[0].submit();
-          });
-        }
+        this.data.loading = true;
+        this.http.aliPay(this.money).subscribe(res => {
+          this.data.loading = false;
+          location.href = res['resultInfo']['url'];
+          // 支付方法
+          // const div = document.createElement('div');
+          // div.innerHTML = res;
+          // document.body.appendChild(div);
+          // document.forms[0].submit();
+        }, (err) => {
+          this.data.error = err.error;
+          this.data.isError();
+        });
+        // if (this.isWeiChat) {
+        //   _AP.pay(this.http.host + `/alipay/request?totalAmount=${this.money}&token=${this.data.getToken()}`);
+        // } else {// 普通浏览器
+        //   this.data.loading = true;
+        //   this.http.aliPay(this.money).subscribe(res => {
+        //     this.data.loading = false;
+        //     location.href = res['resultInfo']['url'];
+        //     // 支付方法
+        //     // const div = document.createElement('div');
+        //     // div.innerHTML = res;
+        //     // document.body.appendChild(div);
+        //     // document.forms[0].submit();
+        //   }, (err) => {
+        //     this.data.error = err.error;
+        //     this.data.isError();
+        //   });
+        // }
       } else if (this.payType === 2 || this.payType === 3) { // 银行卡支付
         this.data.setSession('payType', this.payType);
         this.data.setSession('amount', this.money);
         this.data.goto('bankcard');
       } else if (this.payType === 4) {
         const data = {
-          amount: this.money,
-          channel: '华阳信通'
+          amount: this.money
         };
         this.data.loading = true;
-        this.http.thirdPay(data).subscribe(res => {
+        this.http.thirdPay('thirdpayHongbo', data).subscribe(res => {
           this.data.loading = false;
-          this.data.gotoId('qrcode', res);
-        });
-      } else if (this.payType === 5) {
-        const data = {
-          amount: this.money,
-          channel: '银联'
-        };
-        this.http.thirdPay(data).subscribe(res => {
-          const div = document.createElement('div');
-          div.innerHTML = res;
-          document.body.appendChild(div);
-          document.forms[0].submit();
+          // this.data.gotoId('qrcode', res);
+          location.href = res;
+        }, (err) => {
+          this.data.error = err.error;
+          this.data.isError();
         });
       }
     } else {

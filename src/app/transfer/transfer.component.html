@@ -7,12 +7,21 @@
     <span class="span-title">
       提现金额
     </span>
-  <input type="number" placeholder="请输入提现金额" [(ngModel)]="liftScale">
+    <input type="number" placeholder="请输入提现金额" [(ngModel)]="liftScale">
+  </div>
+  <div class="list-item">
+    <span class="span-title">
+      提现渠道
+    </span>
+    <select [(ngModel)]="liftType">
+      <option value="2">银行卡（线下）</option>
+      <option value="3">支付宝（线下）</option>
+    </select>
   </div>
 </div>
 <p class="tips">
   <span>
-    可提现余额：{{backableScale}} 元
+    账户余额：{{backableScale}} 元
   </span>
   <span>
     <!-- 手续费：1 元 -->

@@ -10,6 +10,7 @@ import { HttpService } from '../http.service';
 export class TransferComponent implements OnInit {
   backableScale: any;
   liftScale: string;
+  liftType = 2;
   constructor(public data: DataService, public http: HttpService) {
     this.backableScale = this.data.getSession('backscale');
     this.liftScale = '';
@@ -29,18 +30,20 @@ export class TransferComponent implements OnInit {
       this.data.ErrorMsg('提现金额不能大于余额');
     } else {
       const data = {
-        liftScale: this.liftScale
+        liftScale: this.liftScale,
+        channel: this.liftType
       };
+      this.data.loading = this.data.show;
       this.http.withdraw(data).subscribe(res => {
         this.data.ErrorMsg('提现申请已提交');
-        this.http.userCenter().subscribe(response => {
-          this.backableScale = response['ableScale'];
-          this.data.setSession('backscale', this.backableScale);
-        });
-        this.liftScale = '';
+        setTimeout(() => {
+          history.go(-2);
+        }, 1000);
       }, err => {
         this.data.error = err.error;
         this.data.isError();
+      }, () => {
+        this.data.loading = this.data.hide;
       });
     }
   }

@@ -1,30 +1,3 @@
-.chedang-div div {
-    flex: 1;
-}
-
-.chedang-div div p {
-    margin: 10px 0;
-    margin-left: 20px;
-}
-
-.cclb {
-    background: #fff;
-}
-
-.cclb table {
-    width: 100%;
-    font-size: .9rem;
-    text-align: center;
-}
-
-.cclb table tr {
-    height: 36px;
-}
-
-.cclb table tr:first-child {
-    background: #ececec;
-}
-
 .span {
     float: left;
     margin-top: 14px;
