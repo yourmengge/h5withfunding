@@ -10,18 +10,18 @@
         <p>
             总资金
         </p> -->
-    <div class="icon4 kyzj"></div>
+    <div class="icon4 kyzj2"></div>
     <p>
-      {{userInfo.ableScale}}
+      {{userInfo.ableScale | round4}}
     </p>
     <p>
       可用资金
     </p>
   </div>
   <div>
-    <div class="icon4 djzj"></div>
+    <div class="icon4 djzj2"></div>
     <p>
-      {{userInfo.lockScale}}
+      {{freezaFee | round4}}
     </p>
     <p>
       冻结资金
@@ -30,18 +30,18 @@
 </div>
 <div class="chedang-div">
   <div>
-    <div class="icon4 gpsz"></div>
+    <div class="icon4 gpsz2"></div>
     <p>
-      {{userInfo.totalScale}}
+      {{userInfo.totalScale | round4}}
     </p>
     <p>
       总资产
     </p>
   </div>
   <div>
-    <div class="icon4 kyzj"></div>
+    <div class="icon4 kyzj2"></div>
     <p>
-      {{userInfo.stockScale}}
+      {{userInfo.stockScale | round4}}
     </p>
     <p>
       持仓权益

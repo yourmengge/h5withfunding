@@ -14,6 +14,7 @@ export class DataService {
   searchStockCode = '';
   sellCnt = '';
   hide = false;
+  isLogin = false;
   token: string;
   tokenP: string;
   timeoutFenshi: any; // 分时图
@@ -28,6 +29,9 @@ export class DataService {
     value: 0,
     text: '== 请选择 =='
   }];
+
+  passwordRE = /^[A-Za-z0-9]+$/;
+
   /**
    * 股票行情
    */
@@ -111,19 +115,27 @@ export class DataService {
  * 用户信息
  */
   userInfo = {
-    allottedScale: 0, // 初期规模
-    ableScale: 0,  // 可用资金
+    tacticsStatus: 0,
+    allottedScale: '', // 初期规模
+    ableScale: '',  // 可用资金
     accountName: 'null', // 中文名
-    lockScale: 0, // 冻结资金
+    lockScale: '', // 冻结资金
     stockScale: 0, // 股票市值
-    totalScale: 0// 总资产
+    totalScale: '', // 总资产
+    financeRatio: 8,
+    financePeriod: 'day',
+    balance: '',
+    cashScale: 0,
+    freezeScale: '',
+    limitAbleScale: '',
+    dynamicAssets: 0
   };
 
   opUserCode: string;
   logo = '';
   constructor(public router: Router) {
     this.token = this.getToken();
-    this.opUserCode = this.getSession('opUserCode');
+    this.opUserCode = this.getOpUserCode();
     if (this.getSession('userInfo') !== null) {
 
       const response = this.getSession('userInfo');
@@ -139,11 +151,39 @@ export class DataService {
       this.logo = 'zgb';
     } else if (window.location.host.indexOf('anandakeji') > 0) {
       this.logo = 'qy';
-    } else if (window.location.host.indexOf('ly50etf') > 0) {
-      this.logo = 'zhishu';
+    } else if (window.location.host.indexOf('guge') >= 0) {
+      this.logo = 'guge';
+    } else if (window.location.host.indexOf('bglj') > 0) {
+      this.logo = 'bglj';
+    } else if (window.location.host.indexOf('xiaoniu6') > 0) {
+      this.logo = 'xncp';
+    } else if (window.location.host.indexOf('funds.sdsuke') >= 0) {
+      this.logo = 'lzt';
+    } else if (window.location.host.indexOf('npq888') >= 0 || window.location.host.indexOf('47.103.33.64') >= 0) {
+      this.logo = 'npq';
+    } else if (window.location.host.indexOf('qiyangju') >= 0) {
+      this.logo = 'zxg';
+    } else if (window.location.host.indexOf('liangyunkj') >= 0) {
+      this.logo = 'liangyun';
+    } else if (window.location.host.indexOf('fujiantianli') >= 0) {
+      this.logo = 'daizong';
+    } else if (window.location.host.indexOf('dc598') >= 0) {
+      this.logo = 'ztyc';
+    } else if (window.location.host.indexOf('hlha668') >= 0) {
+      this.logo = 'hlha';
+    } else if (window.location.host.indexOf('47.103.90.27') >= 0) {
+      this.logo = 'ainiu';
+    } else if (window.location.host.indexOf('ryt.rytx855b') >= 0) {
+      this.logo = 'ryt';
+    } else if (window.location.host.indexOf('rytx855b') >= 0) {
+      this.logo = 'rytx';
     } else {
-      this.logo = 'login';
+      this.logo = 'logo';
     }
+  }
+
+  redirectTo(url) {
+    location.replace(url);
   }
 
   /**
@@ -336,14 +376,15 @@ export class DataService {
   }
 
   beforeMonth() {
-    let year = new Date().getFullYear();
-    let month = new Date().getMonth();
-    const day = new Date().getDate();
-    if (month === 0) {
-      month = 12;
-      year = year - 1;
-    }
-    return `${year}-${this.add0(month)}-${this.add0(day)}`;
+    // let year = new Date().getFullYear();
+    // let month = new Date().getMonth();
+    // const day = new Date().getDate();
+    // if (month === 0) {
+    //   month = 12;
+    //   year = year - 1;
+    // }
+    // return `${year}-${this.add0(month)}-${this.add0(day)}`;
+    return (new Date().getTime() - 2592000000);
   }
 
   /**
@@ -390,6 +431,14 @@ export class DataService {
       this.alert = false;
     }, 3000);
     this.errMsg = desc;
+  }
+
+  getTokenP() {
+    if (this.isNull(this.tokenP)) {
+      return this.getLocalStorage('tokenP');
+    } else {
+      return this.tokenP;
+    }
   }
 
   /**
@@ -447,11 +496,11 @@ export class DataService {
         return;
       } else {
         this.token = this.getToken();
-        return { headers: new HttpHeaders({ 'Authorization': this.getToken() }) };
+        return { headers: new HttpHeaders({ 'Authorization': this.getToken(), 'timeout': `${1000}` }) };
       }
 
     } else {
-      return { headers: new HttpHeaders({ 'Authorization': this.token }) };
+      return { headers: new HttpHeaders({ 'Authorization': this.token, 'timeout': `${1000}` }) };
     }
 
   }
@@ -491,7 +540,7 @@ export class DataService {
 
   getOpUserCode() {
     if (this.isNull(this.opUserCode)) {
-      return this.getSession('opUserCode');
+      return this.getLocalStorage('userPhone');
     } else {
       return this.opUserCode;
     }
@@ -534,6 +583,7 @@ export class DataService {
    * 清除轮询
    */
   clearInterval() {
+
     window.clearTimeout(this.intervalAppoint);
     window.clearTimeout(this.intervalCapital);
     window.clearTimeout(this.intervalHold);
@@ -552,6 +602,13 @@ export class DataService {
       return '';
     }
 
+  }
+
+  /**
+   * 是否为验证数字
+   */
+  isNum(num) {
+    return /^[0-9]*$/.test(num);
   }
   /**
  * 保留n位小数

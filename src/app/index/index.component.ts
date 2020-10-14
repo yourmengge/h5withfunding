@@ -1,31 +1,86 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import Swiper from 'swiper';
+import { Component, OnInit, OnDestroy, AfterViewChecked, AfterViewInit } from '@angular/core';
+// import Swiper from 'swiper';
 import { DataService } from '../data.service';
 import { HttpService } from '../http.service';
-
+declare var Swiper: any;
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
   styleUrls: ['./index.component.css']
 })
-export class IndexComponent implements OnInit, OnDestroy {
+export class IndexComponent implements OnInit, OnDestroy, AfterViewInit {
   list: any;
   timeout: any;
   newslist: any;
+  type = 0;
+  title = [{
+    id: 0,
+    text: '天天赢'
+  }, {
+    id: 1,
+    text: '周周发'
+  }, {
+    id: 2,
+    text: '月月赚'
+  }];
+  detail = [{
+    amount: '1000',
+    multiple: '8',
+    date: '天',
+    money: '3',
+    money2: '元',
+    text: '2个交易日'
+  }, {
+    amount: '1000',
+    multiple: '8',
+    date: '周',
+    money: '14.4',
+    money2: '元',
+    text: '5个交易日'
+  }, {
+    amount: '1000',
+    multiple: '8',
+    date: '月',
+    money: '60',
+    money2: '元',
+    text: '一个月'
+  }];
+  maxMul: 0;
+  minMul: 0;
+  logo = '';
+  staticData = [];
+  financeData = [];
+  financeDetail = [];
+  oneType = false;
   constructor(public data: DataService, public http: HttpService) {
-
+    this.logo = this.data.logo;
+    if (this.data.logo === 'guge') {
+      this.oneType = true;
+      this.title = [{
+        id: 0,
+        text: '天天赢'
+      }];
+    }
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
     const mySwiper = new Swiper('.swiper-container', {
-      autoplay: true,
       pagination: {
         el: '.swiper-pagination',
       },
-      loop: true,
+      autoplay: {
+        delay: 3000,
+        stopOnLastSlide: false,
+        disableOnInteraction: false,
+      },
     });
+  }
+
+  ngOnInit() {
     this.generalTrend();
     this.newsList();
+
+    this.financeScheme();
   }
 
   newsList() {
@@ -53,6 +108,14 @@ export class IndexComponent implements OnInit, OnDestroy {
     });
   }
 
+  getManageFee() {
+    this.http.getManagerFee().subscribe(res => {
+      this.detail.forEach((element, index) => {
+        element.money = (res['resultInfo'][index]['financeRate'] * 1000 * this.minMul).toFixed(2);
+      });
+    });
+  }
+
   color(string) {
     if (string) {
       if (string.indexOf('-') >= 0) {
@@ -63,12 +126,47 @@ export class IndexComponent implements OnInit, OnDestroy {
     }
   }
 
+  financeScheme() {
+    this.http.financeScheme().subscribe(res => {
+      const data = {
+        id: 0,
+        mul: 1
+      };
+      this.staticData = res['resultInfo'];
+      this.financeData = res['resultInfo']['day'];
+      this.finance();
+      //  this.getManageFee();
+    });
+  }
+
+  finance() {
+    this.financeDetail = [];
+    this.financeData.sort((a, b) => {
+      return a['financeRatio'] - b['financeRatio'];
+    });
+    this.maxMul = this.financeData[this.financeData.length - 1]['financeRatio'];
+    this.minMul = this.financeData[0]['financeRatio'];
+  }
+
   goto(id) {
+    this.data.setSession('zixuanId', id);
+    this.data.goto('deposit');
+  }
+
+  goto2(id) {
     this.data.gotoId('newdetail', id);
   }
 
-  goto2(url) {
-    this.data.goto('main/' + url);
+  selectType(id) {
+    this.type = id;
+    if (id === 0) {
+      this.financeData = this.staticData['day'];
+    } else if (id === 1) {
+      this.financeData = this.staticData['week'];
+    } else {
+      this.financeData = this.staticData['month'];
+    }
+    this.finance();
   }
 
 }

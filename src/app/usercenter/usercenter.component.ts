@@ -8,11 +8,32 @@ import { HttpService } from '../http.service';
   styleUrls: ['./usercenter.component.css']
 })
 export class UsercenterComponent implements OnInit, OnDestroy {
-  public menuList: any;
+  public menuList = [{
+    id: 'withdraw',
+    name: '提现',
+    class: ''
+  }, {
+    id: 'recharge',
+    name: '充值',
+    class: 'sell'
+  }, {
+    id: 'deposit',
+    name: '入金',
+    class: 'deposit'
+  }, {
+    id: 'chujin',
+    name: '出金',
+    class: 'chedan'
+  }, {
+    id: 'capitalflow',
+    name: '资金流水',
+    class: 'chicang'
+  }];
   public userInfo: DataService['userInfo'];
   public logo = 'hk';
+  freezaFee = 0;
+  ableScale = 0;
   constructor(public data: DataService, public http: HttpService) {
-    this.menuList = this.data.getCenterMenuList();
   }
   ngOnDestroy() {
     this.data.clearInterval();
@@ -28,12 +49,18 @@ export class UsercenterComponent implements OnInit, OnDestroy {
     this.data.goto('main/jiaoyi/' + url);
   }
 
+  setting() {
+    this.data.goto('setting');
+  }
+
   usercenter() {
     this.http.userCenter().subscribe((res: DataService['userInfo']) => {
       this.userInfo = res;
-      const backscale = res['ableScale'] - res['allottedScale'];
+      const backscale = res['balance'];
       this.data.setSession('userName', res['accountName']);
-      this.data.setSession('backscale', backscale <= 0 ? 0 : backscale);
+      this.data.setSession('ableTakeoutScale', res['ableTakeoutScale']);
+      this.freezaFee = parseFloat(this.userInfo.lockScale) + parseFloat(this.userInfo.freezeScale);
+      this.data.setSession('backscale', parseFloat(backscale) <= 0 ? 0 : backscale);
       this.data.intervalCapital = setTimeout(() => {
         this.usercenter();
       }, 60000);
@@ -58,7 +85,7 @@ export class UsercenterComponent implements OnInit, OnDestroy {
     this.data.ErrorMsg('注销成功');
     this.data.isConnect = false;
     this.data.token = this.data.randomString(32);
-    this.data.setLocalStorage('token', this.data.token);
+    localStorage.removeItem('h5tncltoken');
     this.data.removeSession('opUserCode');
     setTimeout(() => {
       this.data.goto('main/login');
@@ -77,6 +104,8 @@ export class UsercenterComponent implements OnInit, OnDestroy {
       });
     } else {
       this.data.goto(url);
+      this.data.setSession('cashScale', this.userInfo['cashScale']);
+      this.data.setSession('allottedScale', this.userInfo.allottedScale);
     }
 
   }

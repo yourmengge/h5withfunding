@@ -1,37 +1,30 @@
-<div class="fenshi-div" *ngIf="stockCode.length==6">
-  <p class="shifen">最新价：{{stockHQ.lastPrice | round4}} <span [class]='HQColor(stockHQ.upDiff)'>{{stockHQ.upDiff}}</span>
+<div class="fenshi-div" *ngIf="showChart">
+  <p class="shifen">最新价：{{stockHQ.lastPrice | round4}} <span [class]='color(stockHQ.upDiff)'>{{stockHQ.upDiff}}</span>
     <span [class]='color(stockHQ.upRatio)'>{{stockHQ.upRatio}}</span></p>
-  <canvas style="margin-left:10px;" id="trendLine"></canvas>
+  <!-- <canvas style="margin-left:10px;" id="trendLine"></canvas> -->
+</div>
+<div class="fenshi-div2" *ngIf="showChart">
+  <p class="shifen2">
+    <span *ngFor="let item of chartTypeList" [class]='item.type == chartType?"active":""' (click)='changeType(item.type)'>{{item.name}}</span>
+  </p>
+  <!-- <canvas style="margin-left:10px;" id="trendLine"></canvas> -->
+  <div id="chart"></div>
 </div>
 <div class="content">
-
   <div class="left-div {{classType}}">
     <div>
       <input class="input" (keyup)='getQuotation()' maxlength="6" type="text" placeholder="股票代码/首字母" [(ngModel)]='stockCode'>
       <span class="gpmc">{{stockName}}</span>
-    </div>
-    <div class="search-div" [@showDelete]="show">
-      <div (click)='selectGP(a)' *ngFor='let a of list'>
-        <div>
-          <span>{{a.stockCode}}</span>
-        </div>
-        <div>
-          <span>{{a.stockName}}</span>
-        </div>
-        <div>
-          <span>{{a.pinYin}}</span>
-        </div>
-      </div>
     </div>
     <div class="add-down">
       <div class="down" (click)='count(-1)'>-</div>
       <input class="input" type="number" placeholder="{{text}}价" [(ngModel)]='appointPrice' style="text-align: center">
       <div class="add" (click)='count(1)'>+</div>
     </div>
-    <div class="green-red">
-      <span class="green" style="float:left;" (click)='selectPrice(stockHQ.lowPrice)'>跌停 {{stockHQ.lowPrice | toFixed}}</span>
-      <span class="red" style="float:right;" (click)='selectPrice(stockHQ.highPrice)'>涨停 {{stockHQ.highPrice |
-        toFixed}}</span>
+    <div class="green-red" style="    padding-top: 4px;">
+      <span class="green" style="float:left;" (click)='selectPrice(stockHQ.priceDownlimit)'>跌停
+        {{stockHQ.priceDownlimit}}</span>
+      <span class="red" style="float:right;" (click)='selectPrice(stockHQ.priceUplimit)'>涨停 {{stockHQ.priceUplimit}}</span>
     </div>
     <div class="left-content add-down ">
       <div class="down" (click)='count2(-1)'>-</div>
@@ -39,7 +32,7 @@
       <div class="add" (click)='count2(1)'>+</div>
 
     </div>
-    <p class="fullcount"><span>可买股数：{{fullcount}}</span><span>订单金额：{{totalPrice(appointPrice,appointCnt)}}</span></p>
+    <p class="fullcount"><span>可{{classType=='BUY'?'买':'卖'}}股数：{{fullcount}}</span><span>订单金额：{{totalPrice(appointPrice,appointCnt)}}</span></p>
     <div class="four-btn">
       <div class="{{ccount === 'full'?'four-btn-active':''}}" (click)='selectCount("full")'>全仓</div>
       <div class="{{ccount === 'half'?'four-btn-active':''}}" (click)='selectCount("half")'>半仓</div>
@@ -105,6 +98,19 @@
       <span class="{{HQColor(stockHQ.buyLevel.buyPrice05)}}">{{stockHQ.buyLevel.buyPrice05 | toFixed}}</span>
       <span>{{stockHQ.buyLevel.buyVolume05 | numInt}}</span>
     </p>
+  </div>
+</div>
+<div class="search-div" style='position: relative;top: -190px;' [@showDelete]="show">
+  <div (click)='selectGP(a)' *ngFor='let a of list'>
+    <div>
+      <span>{{a.stockCode}}</span>
+    </div>
+    <div>
+      <span>{{a.stockName}}</span>
+    </div>
+    <div>
+      <span>{{a.pinYin}}</span>
+    </div>
   </div>
 </div>
 <div style="margin-top:0px;">

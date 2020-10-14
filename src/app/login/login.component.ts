@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   logo = 'login';
   public phone: string;
   public password: string;
+  rememberPwd: boolean;
   public header = {
     'Authorization': ''
   };
@@ -26,12 +27,13 @@ export class LoginComponent implements OnInit {
     } else {
       this.password = '';
     }
+    this.rememberPwd = true;
 
 
   }
 
   ngOnInit() {
-    this.data.setLocalStorage('token', '');
+    this.data.setLocalStorage('h5tncltoken', '');
     this.data.clearInterval();
     this.logo = this.data.logo;
   }
@@ -48,14 +50,17 @@ export class LoginComponent implements OnInit {
       };
       this.data.loading = this.data.show;
       this.http.login(body).subscribe((res) => {
-        console.log(res);
-        this.data.setSession('opUserCode', this.phone);
-        this.data.setLocalStorage('userPhone', this.phone);
-        this.data.setLocalStorage('password', this.password);
+        // this.data.setSession('opUserCode', this.phone);
+        if (this.rememberPwd) {
+          this.data.setLocalStorage('userPhone', this.phone);
+          this.data.setLocalStorage('password', this.password);
+        } else {
+          this.data.setLocalStorage('userPhone', '');
+          this.data.setLocalStorage('password', '');
+        }
         this.data.opUserCode = this.phone;
         this.data.isConnect = false;
         this.data.token = res['resultInfo'];
-        this.data.setLocalStorage('token', this.data.token);
         // this.header = {
         //   'Authorization': res['itg']['token']
         // };
@@ -63,6 +68,7 @@ export class LoginComponent implements OnInit {
         // this.http.opts = new RequestOptions({ headers: headers });
         // this.data.setSession('header', JSON.stringify(this.header));
         this.data.goto('main/usercenter');
+        // this.data.redirectTo('#/main/usercenter');
       }, (err) => {
         this.data.error = err.error;
         this.data.isError();

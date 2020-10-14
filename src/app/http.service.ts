@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DataService } from './data.service';
 
 @Injectable()
@@ -13,13 +13,20 @@ export class HttpService {
   constructor(public http: HttpClient, public data: DataService) {
     console.log(location.protocol);
     // this.host = location.protocol + '//218.85.23.217:8082/option/';
-    this.host = 'http://101.132.65.124:10007/tnproxyWF/';
+    this.host = 'http://192.168.1.81/tn/';
     this.ws = this.host + 'webSocket';
   }
 
   POST(url, data) {
     this.data.getHeader();
     return this.http.post(url, data, this.data.getHeader());
+  }
+
+  /**
+ * 用户修改密码
+ */
+  resetOldPwd(data) {
+    return this.POST(this.host + 'tntg/pwdReset', data);
   }
 
   /**
@@ -30,10 +37,65 @@ export class HttpService {
   }
 
   /**
+   * 查询余额
+   */
+  getLiftAmount() {
+    return this.POST(this.host + `tntg/getLiftAmount`, {});
+  }
+  /**
+   * 结束策略
+   */
+  finishStrategy() {
+    return this.POST(this.host + `tntg/finishStrategy`, {});
+  }
+
+   /**
+   * 取消结束策略
+   */
+  finishStrategy2() {
+    return this.POST(this.host + `tntg/cancelPreFinishStrategy`, {});
+  }
+
+  /**
+   * 出金
+   */
+  withDraw2(data) {
+    return this.POST(this.host + `tntg/withdraw`, data);
+  }
+
+  /**
+   * 开始策略
+   */
+  deposit(data) {
+    return this.POST(this.host + `tntg/deposit`, data);
+  }
+
+  /**
    * 资金流水
    */
   getFlow(data) {
-    return this.POST(this.host + 'tntg/payOrder/list', data);
+    return this.POST(this.host + 'tntg/fundStream/list', data);
+  }
+
+  /**
+   * 管理费计算公式
+   */
+  getManagerFee() {
+    return this.POST(this.host + 'tntg/manageFee', {});
+  }
+
+  /**
+   * 融资信息
+   */
+  financeScheme() {
+    return this.POST(this.host + 'tntg/financeScheme', {});
+  }
+
+  /**
+   * 管理费
+   */
+  getManagerFee2(data) {
+    return this.POST(this.host + 'tntg/theManageFee', data);
   }
 
   /**
@@ -44,8 +106,8 @@ export class HttpService {
   }
 
   /**
- * 用户修改密码
- */
+  * 用户修改密码
+  */
   reset(data) {
     return this.http.post(this.host + `public/pwdResetByVerifyCode`, data);
   }
@@ -87,8 +149,8 @@ export class HttpService {
   }
 
   /**
- * 获取银行城市列表
- */
+  * 获取银行城市列表
+  */
   getCityList(bankId, provinceId) {
     return this.POST(this.host + `tn/banks/${bankId}/province/${provinceId}/cities`, {});
   }
@@ -120,15 +182,14 @@ export class HttpService {
    * 充值
    */
   aliPay(moeny) {
-    return this.http.post(this.host + `alipay/sign?totalAmount=${moeny}`, {},
-      { headers: this.data.getPayHeader(), responseType: 'text' });
+    return this.POST(this.host + `alipay/request?totalAmount=${moeny}`, {});
   }
 
   /**
    * 第三方支付
    */
-  thirdPay(data) {
-    return this.http.post(this.host + 'thirdpay/request', data,
+  thirdPay(type, data) {
+    return this.http.post(`${this.host}${type}/request`, data,
       { headers: { 'Authorization': this.data.getToken() }, responseType: 'text' });
   }
 
@@ -156,6 +217,36 @@ export class HttpService {
   }
 
   /**
+   * 获取用户自选列表
+   */
+  getUserStockList() {
+    return this.POST(`${this.host}tntg/selfStock/list`, {});
+  }
+
+  /**
+   * 新增自选股
+   * @param code 股票代码
+   */
+  addStockList(code) {
+    return this.POST(`${this.host}tntg/selfStock/insert?stockCode=${code}`, {});
+  }
+
+  /**
+   * 删除自选股
+   * @param code 股票代码
+   */
+  delStockList(code) {
+    return this.POST(`${this.host}tntg/selfStock/delete?stockCode=${code}`, {});
+  }
+
+  /**
+   * 批量添加自选股
+   */
+  addStockList2(list) {
+    return this.POST(`${this.host}tntg/selfStock/updateBatch`, list);
+  }
+
+  /**
    * 分时图数组
    */
   fenshituList(optionCode) {
@@ -174,12 +265,12 @@ export class HttpService {
    * 请求股票行情
    */
   getGPHQ(code, token) {
-    return this.POST(this.host + `push/subsMarket/${code}?tokenP=${token}`, {});
+    return this.POST(this.host + `push/subsMarket/${code}?tokenP=${this.data.getTokenP()}`, {});
   }
 
   /**
- * 获取手续费
- */
+  * 获取手续费
+  */
   commission() {
     return this.POST(this.host + 'tntg/commission', {});
   }
@@ -241,6 +332,13 @@ export class HttpService {
   }
 
   /**
+   * 查询个人详情
+   */
+  userDetail() {
+    return this.POST(this.host + 'tntg/userInfo', {});
+  }
+
+  /**
    * 查询委托
    */
   getAppoint(time) {
@@ -252,6 +350,13 @@ export class HttpService {
    */
   userCenter() {
     return this.POST(this.host + 'tntg/capital', {});
+  }
+
+  /**
+   * 查看个人信息，未登录不跳转到登录界面
+   */
+  userCenter2() {
+    return this.http.post(this.host + 'tntg/capital', {}, { headers: new HttpHeaders({ 'Authorization': this.data.getToken() }) });
   }
 
   /**
@@ -273,5 +378,26 @@ export class HttpService {
    */
   zixuanDetail(string) {
     return this.http.post(this.host + 'push/self/' + string, {});
+  }
+
+  /**
+   * 获取支付途径
+   */
+  getPayWay() {
+    return this.POST(`${this.host}tntg/config/CTRL_PAY_CHANNEL`, {});
+  }
+
+  /**
+   * 获取管理费方案
+   */
+  getManageFee() {
+    return this.POST(`${this.host}tntg/config?name=CTRL_MANAGE_FEE_SCHEME_TYPE,CTRL_COLLECT_MANAGE_FEE_MODE`, {});
+  }
+
+  /**
+   * 新版获取管理费
+   */
+  newManageFee(data) {
+    return this.POST(`${this.host}tntg/theManageFee`, data);
   }
 }

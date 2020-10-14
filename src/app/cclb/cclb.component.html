@@ -5,7 +5,7 @@
         名称
       </td>
       <td>
-        参考盈亏
+        参考盈亏/市值
       </td>
       <td>
         持仓/可用
@@ -20,7 +20,8 @@
         <p>{{a.stockName}}</p>
       </td>
       <td class="{{a.profit < 0?'green':'red'}}">
-        {{a.profit}}
+        <p>{{a.profit}}</p>
+        <p>{{a.stockCnt * a.lastPrice | round4}}</p>
       </td>
       <td>
         <p>
@@ -32,7 +33,7 @@
       </td>
       <td>
         <p>
-          {{a.costPrice | round4}}
+          {{a.costPrice}}
         </p>
         <p>
           {{a.lastPrice | round4}}

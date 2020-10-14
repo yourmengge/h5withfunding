@@ -432,8 +432,8 @@ var StockChart;
       }
     };
     KLine.prototype.drawAxisYText = function () {
-      this.drawText(this.roofPrice.toFixed(4), [0, this.figureOffsetY - this.textOffsetY]);
-      this.drawText(this.floorPrice.toFixed(4), [0, this.figureHeight - this.textOffsetY]);
+      this.drawText(this.roofPrice.toFixed(2), [0, this.figureOffsetY - this.textOffsetY]);
+      this.drawText(this.floorPrice.toFixed(2), [0, this.figureHeight - this.textOffsetY]);
     };
     KLine.prototype.drawGridX = function () {
       var _this = this;
@@ -760,9 +760,9 @@ var StockChart;
       this.drawText('11:30/13:00', [figureWidth / 2 - 25, axisY]);
       this.drawText('14:00', [(figureWidth / 4) * 3 - 13, axisY]);
       this.drawText('15:00', [figureWidth - 27, axisY]);
-      this.drawText(roofPrice.toFixed(4), [0, roofY]);
-      this.drawText(floorPrice.toFixed(4), [0, floorY]);
-      this.drawText(preClosePrice.toFixed(4), [0, figureOffsetHeight / 2 + roofY]);
+      this.drawText(roofPrice.toFixed(2), [0, roofY]);
+      this.drawText(floorPrice.toFixed(2), [0, floorY]);
+      this.drawText(preClosePrice.toFixed(2), [0, figureOffsetHeight / 2 + roofY]);
       this.drawText(roofPercent, [figureWidth - 35, roofY]);
       this.drawText(floorPercent, [figureWidth - 40, floorY]);
       this.drawText('0.00%', [figureWidth - 30, figureOffsetHeight / 2 + roofY]);

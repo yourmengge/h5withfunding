@@ -18,9 +18,10 @@ export class ChedanComponent implements OnInit {
     appointCnt: '',
     appointPrice: '',
     appointTypeDesc: '',
-    appointOrderCode: '',
+    pkOrder: '',
     dealCnt: ''
   };
+  freezaFee: any;
   clickTime: any;
   submitAlert: boolean;
   constructor(public data: DataService, public http: HttpService) {
@@ -38,6 +39,7 @@ export class ChedanComponent implements OnInit {
   usercenter() {
     this.http.userCenter().subscribe((res: DataService['userInfo']) => {
       this.userInfo = res;
+      this.freezaFee = parseFloat(this.userInfo.lockScale) + parseFloat(this.userInfo.freezeScale);
       this.data.intervalCapital = setTimeout(() => {
         this.usercenter();
       }, 3000);
@@ -57,7 +59,7 @@ export class ChedanComponent implements OnInit {
     this.orderData.stockName = orderdata.stockName;
     this.orderData.dealCnt = orderdata.dealCnt;
     this.type = orderdata.appointTypeDesc;
-    this.orderData.appointOrderCode = orderdata.appointOrderCode;
+    this.orderData.pkOrder = orderdata.pkOrder;
 
   }
 
@@ -95,8 +97,8 @@ export class ChedanComponent implements OnInit {
    * 确认撤单
    */
   submitChedan() {
-    if (!this.data.isNull(this.orderData.appointOrderCode)) {
-      this.http.chedan(this.orderData.appointOrderCode).subscribe((res) => {
+    if (!this.data.isNull(this.orderData.pkOrder)) {
+      this.http.chedan(this.orderData.pkOrder).subscribe((res) => {
         console.log(res);
         this.data.ErrorMsg('撤单已提交');
         this.closeAlert();

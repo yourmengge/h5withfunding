@@ -22,6 +22,9 @@ export class WithdrawComponent implements OnInit {
   }
 
   goto(url) {
+    if (url === 'card') {
+      this.data.setSession('updateCard', false);
+    }
     this.data.goto(url);
   }
 }

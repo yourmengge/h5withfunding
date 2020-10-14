@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
@@ -33,12 +33,17 @@ import { CardComponent } from './card/card.component';
 import { TransferComponent } from './transfer/transfer.component';
 import { BankcardComponent } from './bankcard/bankcard.component';
 import { IndexComponent } from './index/index.component';
-import { QuotalistComponent } from './quotalist/quotalist.component';
 import { SignupComponent } from './signup/signup.component';
 import { NewsDetailComponent } from './news-detail/news-detail.component';
 import { CapitalFlowComponent } from './capital-flow/capital-flow.component';
 import { QrcodeComponent } from './qrcode/qrcode.component';
 import { DetailComponent } from './detail/detail.component';
+import { StrategyComponent } from './strategy/strategy.component';
+import { ChujinComponent } from './chujin/chujin.component';
+import { SettingComponent } from './setting/setting/setting.component';
+import { ResetPwdComponent } from './setting/reset-pwd/reset-pwd.component';
+import { DepositComponent } from './deposit/deposit.component';
+import { UserDetailComponent } from './setting/user-detail/user-detail.component';
 
 const jiaoyiChildRoutes: Routes = [
   { path: 'chicang', component: ChicangComponent },
@@ -64,9 +69,14 @@ const appChildRoutes: Routes = [
 
 const appRoutes: Routes = [
   { path: 'qrcode/:id', component: QrcodeComponent },
+  { path: 'chujin', component: ChujinComponent },
+  { path: 'userDetail', component: UserDetailComponent },
   { path: 'capitalflow', component: CapitalFlowComponent },
-  { path: 'quatolist/:id', component: QuotalistComponent },
+  { path: 'strategy', component: StrategyComponent },
   { path: 'bankcard', component: BankcardComponent },
+  { path: 'resetPwd', component: ResetPwdComponent },
+  { path: 'setting', component: SettingComponent },
+  { path: 'deposit', component: DepositComponent },
   { path: 'detail', component: DetailComponent },
   { path: 'transfer', component: TransferComponent },
   { path: 'withdraw', component: WithdrawComponent },
@@ -106,15 +116,21 @@ const appRoutes: Routes = [
     TransferComponent,
     BankcardComponent,
     IndexComponent,
-    QuotalistComponent,
     SignupComponent,
     NewsDetailComponent,
     CapitalFlowComponent,
     QrcodeComponent,
-    DetailComponent
+    DetailComponent,
+    StrategyComponent,
+    ChujinComponent,
+    SettingComponent,
+    ResetPwdComponent,
+    DepositComponent,
+    UserDetailComponent
   ],
   imports: [
     BrowserAnimationsModule,
+    NoopAnimationsModule,
     BrowserModule,
     FormsModule,
     HttpModule,

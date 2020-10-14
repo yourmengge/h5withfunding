@@ -1,31 +1,4 @@
-.chedang-div div {
-  flex: 1;
-}
-
-.chedang-div div p {
-  margin: 10px 0;
-  margin-left: 20px;
-}
-
-.cclb {
-  background: #fff;
-}
-
-.cclb table {
-  width: 100%;
-  text-align: center;
-
-}
-
-.cclb table tr {
-  height: 36px;
-}
-
-.cclb table tr:first-child {
-  background: #ececec;
-}
-
 .chicang {
-  height: calc(100vh - 270px);
+  height: calc(100vh - 243px);
   overflow-y: auto;
 }

@@ -13,17 +13,30 @@ export class AppComponent implements DoCheck, OnInit {
   title = 'app';
   loading = true;
   stompClient: any;
+  socket: any;
   constructor(public data: DataService, public http: HttpService) {
     this.alert = this.data.alert;
     this.loading = this.data.loading;
+    this.data.setLocalStorage('tokenP', this.data.randomString(32));
   }
 
   ngOnInit() {
-    // this.connect();
+    this.loadCss();
     if (this.data.isNull(this.data.getToken())) {
       this.data.token = this.data.randomString(32);
       this.data.setLocalStorage('token', this.data.token);
     }
+    this.connect();
+  }
+
+  /**
+   * 动态加载css
+   */
+  loadCss() {
+    const node = document.createElement('link');
+    node.rel = 'stylesheet';
+    node.href = './assets/css/style.css';
+    document.getElementsByTagName('head')[0].appendChild(node);
   }
   /**
   * 取消订阅
@@ -31,7 +44,7 @@ export class AppComponent implements DoCheck, OnInit {
   cancelSubscribe() {
     this.http.cancelSubscribe().subscribe((res) => {
       this.data.resetStockHQ();
-      console.log('取消订阅');
+      console.log(`取消订阅,${this.data.getTokenP()}`);
     });
   }
   /**
@@ -47,36 +60,57 @@ export class AppComponent implements DoCheck, OnInit {
    */
   connect() {
     console.log('发起ws请求');
+    this.socket = new SockJS(this.http.ws);
+    console.log(this.socket);
+    this.stompClient = over(this.socket);
+    console.log(this.stompClient);
+    this.disconnect();
     const that = this;
-    const socket = new SockJS(this.http.ws);
-    const headers = { token: this.data.getToken() };
-    this.stompClient = over(socket);
-    this.stompClient.connect(headers, function (frame) {
-      that.stompClient.subscribe('/user/' + that.data.getToken() + '/topic/market', function (res) {
-        that.data.stockHQ = JSON.parse(res.body);
-      });
+    const headers = { token: this.data.getTokenP() };
+    that.stompClient.connect(headers, function (frame) {
+      console.log('连接成功');
+      that.connectWs();
     }, function (err) {
-      console.log('断开连接');
-    });
-    socket.onclose = function () {
-      console.log('断开了');
+      console.log('连接失败');
       that.connect();
-      if (that.data.getUrl(1) === 'chart' || that.data.getUrl(3) === 'buy' || that.data.getUrl(3) === 'sell') {
-        if (!that.data.isNull(that.data.searchStockCode)) {
-          that.http.getGPHQ(that.data.searchStockCode, that.data.getToken()).subscribe(res => {
-
-          });
-        }
-      }
+    });
+    that.socket.onclose = function () {
+      console.log('断开了');
+      that.disconnect();
+      setTimeout(() => {
+        that.socket = new SockJS(that.http.ws);
+        that.stompClient = over(that.socket);
+        that.stompClient.connect(headers, function (frame) {
+          console.log('连接成功');
+          that.connectWs();
+        }, function (err) {
+          console.log('连接失败');
+          that.connect();
+        });
+      }, 10000);
     };
+  }
+
+  connectWs() {
+    const that = this;
+    that.stompClient.subscribe('/user/' + that.data.getTokenP() + '/topic/market', function (res) {
+      const data = JSON.parse(res.body);
+      if (that.data.searchStockCode === data.stockCode) {
+        that.data.stockHQ = data;
+      }
+    });
   }
 
   ngDoCheck() {
     this.alert = this.data.alert;
     this.loading = this.data.loading;
     if (!this.data.isConnect) {
-      this.connect();
-      this.data.isConnect = !this.data.isConnect;
+      this.data.isConnect = true;
+      if (this.data.getLocalStorage('token') !== this.data.getToken()) {
+        this.data.setLocalStorage('token', this.data.token);
+        this.connectWs();
+      }
     }
+
   }
 }

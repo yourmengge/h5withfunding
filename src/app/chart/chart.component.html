@@ -11,7 +11,7 @@
       <div class="head1">
         <div style="color:#b00e23;margin-top: 10px;text-align: left;padding-left: 20px;">
           <span class="head-span">{{stockHQ.lastPrice | round4}}</span>
-          <span style="margin:0 10px;">
+          <span [class]='color(stockHQ.upDiff)' style="margin:0 10px;">
             {{stockHQ.upDiff}}
           </span>
           <span [class]='color(stockHQ.upRatio)'>
@@ -70,9 +70,12 @@
       </div>
     </div> -->
   </div>
-  <div class="fenshi-div">
-    <p class="shifen">分时</p>
-    <canvas style="margin-left:10px;" id="trendLine"></canvas>
+  <div class="fenshi-div2" style='margin-top:8px;'>
+    <p class="shifen2">
+      <span *ngFor="let item of chartTypeList" [class]='item.type == chartType?"active":""' (click)='changeType(item.type)'>{{item.name}}</span>
+    </p>
+    <!-- <canvas style="margin-left:10px;" id="trendLine"></canvas> -->
+    <div id="chart" style="background: #fff;"></div>
   </div>
 
   <div class="right-div">

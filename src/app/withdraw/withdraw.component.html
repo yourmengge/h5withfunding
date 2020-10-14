@@ -2,16 +2,16 @@
   <div class="back" (click)='back()'></div>
   <p class="navigation-title">提现</p>
 </div>
-<div class="list-item" (click)='goto("transfer")'>
+<div class="list-item" (click)='goto("transfer")' style='margin-top: 10px;'>
   <span>人民币提现</span>
 
   <img class="right-icon" src="./assets/images/right.png" alt="">
   <div>
-    <span>可提现余额：</span>
+    <span>账户余额：</span>
     <span class="red">{{backableScale}}</span>
   </div>
 </div>
-<div class="list-item" (click)='goto("card")'>
-  <span>绑定提现银行卡</span>
+<div class="list-item" (click)='goto("card")' style='margin-top: 10px;'>
+  <span>提现信息</span>
   <img class="right-icon" src="./assets/images/right.png" alt="">
 </div>
